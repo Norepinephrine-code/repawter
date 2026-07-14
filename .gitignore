@@ -1,0 +1,22 @@
+# ── Uploaded & generated media (keep folder structure, ignore contents) ──
+/uploads/reports/*
+/uploads/pets/*
+/uploads/resources/*
+/uploads/agreements/*
+!/uploads/reports/.gitkeep
+!/uploads/pets/.gitkeep
+
+# ── OS / editor cruft ──
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*.log
+*.tmp
+
+# ── Local IDE ──
+.vscode/
+.idea/
+
+# ── Optional local override (committed default config is XAMPP-friendly) ──
+# app/config/config.local.php

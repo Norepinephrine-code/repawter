@@ -1,0 +1,374 @@
+/* RePawter — paw-theme.css
+   Warm palette layered over Bootstrap 5
+   ─────────────────────────────────────
+   Primary  : #F4794E  (warm coral/orange)
+   Secondary: #2A9D8F  (teal)
+   Dark     : #5C3D2E  (deep brown)
+   Cream bg : #FFF8F1
+*/
+
+:root {
+  --paw-primary:        #F4794E;
+  --paw-primary-dark:   #d9613a;
+  --paw-secondary:      #2A9D8F;
+  --paw-secondary-dark: #1e7367;
+  --paw-dark:           #5C3D2E;
+  --paw-cream:          #FFF8F1;
+  --paw-muted:          #A0785A;
+  --paw-border:         #F0D9C8;
+  --paw-shadow:         rgba(92, 61, 46, 0.12);
+}
+
+/* ── Global ─────────────────────────────────────── */
+body {
+  background-color: var(--paw-cream);
+  color: #3a2010;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+a {
+  color: var(--paw-primary);
+}
+
+a:hover {
+  color: var(--paw-primary-dark);
+}
+
+/* ── Navbar ─────────────────────────────────────── */
+.paw-navbar {
+  background-color: var(--paw-dark) !important;
+  box-shadow: 0 2px 8px var(--paw-shadow);
+}
+
+.paw-navbar .navbar-brand,
+.paw-navbar .nav-link {
+  color: #fde8d8 !important;
+}
+
+.paw-navbar .nav-link:hover,
+.paw-navbar .nav-link.active {
+  color: var(--paw-primary) !important;
+}
+
+.paw-navbar .navbar-toggler-icon {
+  filter: invert(1);
+}
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn-paw {
+  background-color: var(--paw-primary);
+  border-color:     var(--paw-primary);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.1s;
+}
+
+.btn-paw:hover,
+.btn-paw:focus {
+  background-color: var(--paw-primary-dark);
+  border-color:     var(--paw-primary-dark);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-paw:active {
+  transform: translateY(0);
+}
+
+.btn-paw-outline {
+  border: 2px solid var(--paw-primary);
+  color: var(--paw-primary);
+  background: transparent;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-paw-outline:hover,
+.btn-paw-outline:focus {
+  background-color: var(--paw-primary);
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.btn-paw-teal {
+  background-color: var(--paw-secondary);
+  border-color: var(--paw-secondary);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.btn-paw-teal:hover {
+  background-color: var(--paw-secondary-dark);
+  border-color: var(--paw-secondary-dark);
+  color: #fff;
+}
+
+/* ── Cards ─────────────────────────────────────── */
+.paw-card {
+  background: #fff;
+  border: 1px solid var(--paw-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--paw-shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.paw-card:hover {
+  box-shadow: 0 6px 18px var(--paw-shadow);
+  transform: translateY(-2px);
+}
+
+/* ── Hero ─────────────────────────────────────── */
+.paw-hero {
+  background: linear-gradient(135deg, var(--paw-dark) 0%, #8b5e42 100%);
+  color: #fff;
+  padding: 4rem 1rem;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.paw-hero h1 {
+  font-size: 2.8rem;
+  font-weight: 800;
+}
+
+.paw-hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* ── Page Title ─────────────────────────────────── */
+.paw-page-title {
+  color: var(--paw-dark);
+  font-weight: 700;
+  border-bottom: 3px solid var(--paw-primary);
+  padding-bottom: 0.4rem;
+  margin-bottom: 1.5rem;
+  display: inline-block;
+}
+
+/* ── Status Badges ─────────────────────────────── */
+.badge-status--submitted {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.badge-status--under_review {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.badge-status--verified {
+  background-color: var(--paw-secondary);
+  color: #fff;
+}
+
+.badge-status--rejected {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.badge-status--assigned {
+  background-color: #6610f2;
+  color: #fff;
+}
+
+.badge-status--in_progress {
+  background-color: var(--paw-primary);
+  color: #fff;
+}
+
+.badge-status--resolved {
+  background-color: #198754;
+  color: #fff;
+}
+
+.badge-status--archived {
+  background-color: #495057;
+  color: #ddd;
+}
+
+/* ── Urgency Pills ──────────────────────────────── */
+.urgency--low {
+  background-color: #d1e7dd;
+  color: #0a3622;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.urgency--medium {
+  background-color: #fff3cd;
+  color: #664d03;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.urgency--high {
+  background-color: #ffe5d0;
+  color: #7c2c00;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.urgency--critical {
+  background-color: #f8d7da;
+  color: #58151c;
+  border-radius: 20px;
+  padding: 2px 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  animation: pulse-critical 1.5s infinite;
+}
+
+@keyframes pulse-critical {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+/* ── Pet Cards ──────────────────────────────────── */
+.pet-card {
+  border: 1px solid var(--paw-border);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px var(--paw-shadow);
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.pet-card:hover {
+  box-shadow: 0 8px 24px var(--paw-shadow);
+  transform: translateY(-3px);
+}
+
+.pet-card__img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.pet-card__body {
+  padding: 1rem;
+}
+
+.pet-card__status {
+  font-size: 0.75rem;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── Photos ─────────────────────────────────────── */
+.report-photo {
+  max-height: 340px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--paw-border);
+}
+
+.pet-photo {
+  max-height: 380px;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid var(--paw-border);
+}
+
+/* ── Admin sub-navigation (horizontal; scrolls on mobile) ── */
+.paw-admin-subnav {
+  background-color: #fff;
+  border: 1px solid var(--paw-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--paw-shadow);
+  padding: 0.4rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.paw-admin-subnav .nav {
+  flex-wrap: nowrap;
+  gap: 0.25rem;
+}
+
+.paw-admin-nav-link {
+  color: var(--paw-dark);
+  border-radius: 8px;
+  padding: 0.45rem 0.85rem;
+  white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.paw-admin-nav-link:hover {
+  background-color: var(--paw-cream);
+  color: var(--paw-primary);
+}
+
+.paw-admin-nav-link.active {
+  background-color: var(--paw-primary);
+  color: #fff !important;
+  font-weight: 600;
+}
+
+/* ── Alert overrides ────────────────────────────── */
+.alert {
+  border-radius: 10px;
+}
+
+/* ── Form polish ────────────────────────────────── */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--paw-primary);
+  box-shadow: 0 0 0 0.2rem rgba(244, 121, 78, 0.25);
+}
+
+/* ── Table ──────────────────────────────────────── */
+.table > thead {
+  background-color: var(--paw-dark);
+  color: #fde8d8;
+}
+
+/* ── Utilities ──────────────────────────────────── */
+.text-paw {
+  color: var(--paw-primary) !important;
+}
+
+.bg-paw {
+  background-color: var(--paw-primary) !important;
+}
+
+.text-paw-dark {
+  color: var(--paw-dark) !important;
+}
+
+.border-paw {
+  border-color: var(--paw-border) !important;
+}
+
+/* ── Responsive tweaks ──────────────────────────── */
+.table-responsive { -webkit-overflow-scrolling: touch; }
+
+@media (max-width: 768px) {
+  .paw-hero h1 { font-size: 1.9rem; }
+}
+
+@media (max-width: 575.98px) {
+  .paw-hero { padding: 2.5rem 1rem; }
+  .paw-hero h1 { font-size: 1.6rem; }
+  .paw-hero p  { font-size: 1rem; }
+  .paw-page-title { font-size: 1.35rem; }
+  .table { font-size: 0.875rem; }
+  main.container,
+  main .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  /* stack action buttons full-width on phones for easy tapping */
+  .paw-actions-stack .btn { width: 100%; }
+}
