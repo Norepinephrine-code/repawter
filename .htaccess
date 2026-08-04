@@ -1,2 +1,48 @@
 DirectoryIndex index.php
 Options -Indexes
+
+# ── Security headers ──────────────────────────────────────────────
+<IfModule mod_headers.c>
+    # Prevent MIME-type sniffing
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Prevent clickjacking (framing)
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    # Control how much referrer info is sent
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+
+    # Disable unnecessary browser features
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+
+    # Content Security Policy
+    # - default-src: only allow from same origin
+    # - script-src:  allow inline (Bootstrap data attributes), CDN, and self
+    # - style-src:   allow inline (Bootstrap), CDN, and self
+    # - img-src:     allow self, data URIs, and CDN
+    # - font-src:    allow CDN
+    # - connect-src: allow self (for AJAX/FullCalendar fetches)
+    # - object-src:  block all (no Flash/plugins)
+    # - base-uri:    restrict to self
+    # - form-action: allow self
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+
+    # HSTS — only meaningful behind HTTPS; ignored on HTTP
+    Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
+</IfModule>
+
+# ── Force HTTPS in production ─────────────────────────────────────
+# Uncomment the block below once TLS is configured on the server.
+# <IfModule mod_rewrite.c>
+#     RewriteEngine On
+#     RewriteCond %{HTTPS} off
+#     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ── Block dotfiles / sensitive files ──────────────────────────────
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(sql|md|log|tmp)$">
+    Require all denied
+</FilesMatch>

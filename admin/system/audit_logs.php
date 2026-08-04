@@ -26,7 +26,6 @@ $sql = "SELECT
 $result = paginate($sql, $params, $page);
 $logs   = $result['rows'];
 
-// Distinct action values for filter dropdown
 $actionValues = db_all('SELECT DISTINCT action FROM audit_logs ORDER BY action ASC');
 
 $qBase    = http_build_query(array_filter(['action' => $filterAction, 'page' => '%d']));
@@ -42,7 +41,6 @@ admin_nav('audit');
         <span class="text-muted"><?= (int)$result['total'] ?> log entries</span>
     </div>
 
-    <!-- Filter -->
     <form method="get" class="row g-2 mb-4 align-items-end">
         <div class="col-sm-6 col-md-3">
             <label class="form-label small">Filter by Action</label>
@@ -59,7 +57,6 @@ admin_nav('audit');
         </div>
     </form>
 
-    <!-- Table -->
     <div class="table-responsive">
         <table class="table table-hover table-sm align-middle">
             <thead class="table-light">

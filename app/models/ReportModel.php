@@ -3,14 +3,7 @@ declare(strict_types=1);
 
 class ReportModel
 {
-    // -------------------------------------------------------------------------
-    // CREATE
-    // -------------------------------------------------------------------------
 
-    /**
-     * Insert a new report and its initial status-history row.
-     * Returns the new report id.
-     */
     public static function create(array $data): int
     {
         db_exec(
@@ -36,7 +29,6 @@ class ReportModel
 
         $reportId = (int) db_insert_id();
 
-        // Initial status-history row
         db_exec(
             'INSERT INTO report_status_history
                 (report_id, from_status, to_status, changed_by, note, created_at)
@@ -47,25 +39,11 @@ class ReportModel
         return $reportId;
     }
 
-    // -------------------------------------------------------------------------
-    // READ
-    // -------------------------------------------------------------------------
-
-    /** Return a single report row (no JOINs) or null. */
     public static function find(int $id): ?array
     {
         return db_one('SELECT * FROM reports WHERE id = ?', [$id]);
     }
 
-    /**
-     * Return a report with related display data:
-     *   barangay.name            AS barangay_name
-     *   reporter.full_name       AS reporter_name
-     *   reporter.email           AS reporter_email
-     *   reporter.contact_number  AS reporter_contact
-     *   assignee.full_name       AS assigned_to_name
-     *   verifier.full_name       AS verified_by_name
-     */
     public static function find_with_details(int $id): ?array
     {
         return db_one(
@@ -86,11 +64,6 @@ class ReportModel
         );
     }
 
-    // -------------------------------------------------------------------------
-    // LIST
-    // -------------------------------------------------------------------------
-
-    /** Paginated list of reports for a specific user, newest first. */
     public static function list_by_user(int $userId, int $page): array
     {
         $sql = 'SELECT r.*,
@@ -103,11 +76,6 @@ class ReportModel
         return paginate($sql, [$userId], $page);
     }
 
-    /**
-     * Paginated, filtered list of all reports (used by Package D admin view).
-     * Supported filter keys: status, urgency, barangay_id, assigned_to, search.
-     * Results ordered newest first.
-     */
     public static function list_filtered(array $filters, int $page): array
     {
         $where  = [];
@@ -157,14 +125,6 @@ class ReportModel
         return paginate($sql, $params, $page);
     }
 
-    // -------------------------------------------------------------------------
-    // UPDATE
-    // -------------------------------------------------------------------------
-
-    /**
-     * Update editable fields on a report.
-     * Caller is responsible for checking is_locked before calling.
-     */
     public static function update(int $id, array $data): void
     {
         $allowed = [
@@ -196,20 +156,11 @@ class ReportModel
         );
     }
 
-    // -------------------------------------------------------------------------
-    // STATUS MANAGEMENT
-    // -------------------------------------------------------------------------
-
-    /**
-     * Change report status, lock it (if leaving 'submitted'), set timestamps,
-     * and record a status-history entry.
-     */
     public static function set_status(int $id, string $newStatus, int $changedBy, ?string $note): void
     {
         $current = db_one('SELECT status FROM reports WHERE id = ?', [$id]);
         $fromStatus = $current ? $current['status'] : null;
 
-        // Build SET clause based on new status
         $extraSets = '';
         if ($newStatus === 'resolved') {
             $extraSets = ', resolved_at = NOW()';
@@ -217,7 +168,6 @@ class ReportModel
             $extraSets = ', archived_at = NOW()';
         }
 
-        // Lock whenever status leaves 'submitted'
         $isLocked = ($newStatus !== 'submitted') ? 1 : 0;
 
         db_exec(
@@ -227,7 +177,6 @@ class ReportModel
             [$newStatus, $isLocked, $id]
         );
 
-        // Append history row
         db_exec(
             'INSERT INTO report_status_history
                 (report_id, from_status, to_status, changed_by, note, created_at)
@@ -236,9 +185,6 @@ class ReportModel
         );
     }
 
-    /**
-     * Assign the report to a user; sets status→assigned, locks the report.
-     */
     public static function assign(int $id, int $assigneeId, int $by): void
     {
         $current    = db_one('SELECT status FROM reports WHERE id = ?', [$id]);
@@ -260,9 +206,6 @@ class ReportModel
         );
     }
 
-    /**
-     * Mark a report as verified by a specific user; locks the report.
-     */
     public static function set_verified(int $id, int $by): void
     {
         $current    = db_one('SELECT status FROM reports WHERE id = ?', [$id]);
@@ -284,19 +227,11 @@ class ReportModel
         );
     }
 
-    /**
-     * Archive a report by delegating to set_status.
-     */
     public static function archive(int $id, int $by): void
     {
         self::set_status($id, 'archived', $by, null);
     }
 
-    // -------------------------------------------------------------------------
-    // HISTORY & LOCK
-    // -------------------------------------------------------------------------
-
-    /** Return all status-history rows for a report, oldest first. */
     public static function status_history(int $reportId): array
     {
         return db_all(
@@ -309,18 +244,12 @@ class ReportModel
         );
     }
 
-    /** Returns true if the report's is_locked flag is set. */
     public static function is_locked(int $id): bool
     {
         $row = db_one('SELECT is_locked FROM reports WHERE id = ?', [$id]);
         return (bool) ($row['is_locked'] ?? false);
     }
 
-    // -------------------------------------------------------------------------
-    // VERIFICATION CHECKLIST
-    // -------------------------------------------------------------------------
-
-    /** Return all active verification criteria ordered by sort_order. */
     public static function active_criteria(): array
     {
         return db_all(
@@ -329,10 +258,6 @@ class ReportModel
         );
     }
 
-    /**
-     * Return active criteria LEFT JOINed with this report's responses.
-     * Each row has all criteria columns plus: is_met, note (from response), or nulls.
-     */
     public static function checklist_for(int $reportId): array
     {
         return db_all(
@@ -348,10 +273,6 @@ class ReportModel
         );
     }
 
-    /**
-     * Upsert checklist responses for a report.
-     * $responses = [criteria_id => ['is_met' => bool, 'note' => string], ...]
-     */
     public static function save_checklist(int $reportId, array $responses, int $by): void
     {
         foreach ($responses as $criteriaId => $resp) {
@@ -373,12 +294,9 @@ class ReportModel
         }
     }
 
-    /**
-     * Returns true iff every active required criterion has a response with is_met = 1.
-     */
     public static function all_required_met(int $reportId): bool
     {
-        // Count required criteria that are either unanswered or not met
+
         $row = db_one(
             'SELECT COUNT(*) AS cnt
              FROM verification_criteria vc

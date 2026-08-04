@@ -16,7 +16,7 @@ if ($res === null || !$res['is_published']) {
 layout_header(e($res['title']), 'resources');
 ?>
 <article class="col-lg-8 mx-auto">
-    <!-- Back link -->
+
     <a href="<?= url('/resources/') ?>" class="text-decoration-none text-muted mb-3 d-inline-block">
         <i class="bi bi-arrow-left me-1"></i>Back to Resources
     </a>
@@ -47,7 +47,7 @@ layout_header(e($res['title']), 'resources');
     <hr class="mb-4">
 
     <div class="resource-body lh-lg">
-        <?= nl2br(e($res['body'])) ?>
+        <?= $res['body'] ?>
     </div>
 
     <hr class="mt-5 mb-4">

@@ -33,7 +33,6 @@ admin_nav('pets');
         </a>
     </div>
 
-    <!-- Filters -->
     <form method="get" class="row g-2 mb-4">
         <div class="col-auto">
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -58,7 +57,6 @@ admin_nav('pets');
         </div>
     </form>
 
-    <!-- Pets table -->
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
@@ -134,7 +132,6 @@ admin_nav('pets');
         </table>
     </div>
 
-    <!-- Pagination -->
     <?php
     $qStr = http_build_query(array_filter($filters));
     $sep  = $qStr ? '&' : '';

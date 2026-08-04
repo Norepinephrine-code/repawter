@@ -41,7 +41,6 @@ layout_header('Apply to Adopt — ' . e($pet['name']), 'gallery');
 
     <h1 class="paw-page-title mb-4">Apply to Adopt <?= e($pet['name']) ?></h1>
 
-    <!-- Pet summary card -->
     <div class="card paw-card mb-4">
         <div class="row g-0">
             <div class="col-md-3">
@@ -65,7 +64,6 @@ layout_header('Apply to Adopt — ' . e($pet['name']), 'gallery');
         </div>
     </div>
 
-    <!-- Application form -->
     <div class="card paw-card">
         <div class="card-body">
             <form method="post" action="<?= url('/actions/adoption/adoption_submit.php') ?>">

@@ -1,5 +1,5 @@
 <?php
-/** @var string $status */
+
 $statusLabels = [
     'submitted'    => 'Submitted',
     'under_review' => 'Under Review',

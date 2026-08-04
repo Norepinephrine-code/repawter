@@ -28,7 +28,6 @@ admin_nav('adoption');
 <div class="container-fluid py-4">
     <h1 class="paw-page-title mb-3">Adoption Applications</h1>
 
-    <!-- Filter -->
     <form method="get" class="row g-2 mb-4">
         <div class="col-auto">
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -49,7 +48,7 @@ admin_nav('adoption');
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>
                     <th>Pet</th>
                     <th>Applicant</th>
                     <th>Status</th>
@@ -75,7 +74,7 @@ admin_nav('adoption');
                 ][$app['status']] ?? 'badge-status--submitted';
                 ?>
                 <tr>
-                    <td class="text-muted small">#<?= (int)$app['id'] ?></td>
+                    <td class="text-muted small">
                     <td class="fw-semibold"><?= e($app['pet_name']) ?></td>
                     <td><?= e($app['applicant_name']) ?></td>
                     <td>
@@ -97,7 +96,6 @@ admin_nav('adoption');
         </table>
     </div>
 
-    <!-- Pagination -->
     <?php
     $qStr = $filters['status'] ? 'status=' . urlencode($filters['status']) . '&' : '';
     echo render_pager($result, url('/admin/adoption/index.php?' . $qStr . 'page=%d'));

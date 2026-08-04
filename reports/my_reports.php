@@ -31,7 +31,7 @@ layout_header('My Reports', 'my_reports');
             <?php foreach ($rows as $r): ?>
             <div class="col-12">
                 <div class="paw-card p-3 d-flex gap-3 align-items-start">
-                    <!-- Thumbnail -->
+
                     <?php if (!empty($r['photo_path'])): ?>
                     <img src="<?= e(upload_url($r['photo_path'])) ?>"
                          alt="Report photo"
@@ -44,7 +44,6 @@ layout_header('My Reports', 'my_reports');
                     </div>
                     <?php endif; ?>
 
-                    <!-- Details -->
                     <div class="flex-grow-1 min-w-0">
                         <div class="d-flex flex-wrap align-items-center gap-2 mb-1">
                             <strong><?= e($r['title'] ?: ucfirst($r['animal_type']) . ' report') ?></strong>
@@ -63,7 +62,6 @@ layout_header('My Reports', 'my_reports');
                         </div>
                     </div>
 
-                    <!-- Action -->
                     <div class="flex-shrink-0">
                         <a href="<?= url('/reports/view.php?id=' . (int) $r['id']) ?>"
                            class="btn btn-sm btn-paw-outline">
@@ -75,7 +73,6 @@ layout_header('My Reports', 'my_reports');
             <?php endforeach; ?>
         </div>
 
-        <!-- Pagination -->
         <div class="mt-4">
             <?= render_pager($result, url('/reports/my_reports.php?page=%d')) ?>
         </div>

@@ -3,7 +3,6 @@ require __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
-// Filters from GET
 $filters = [
     'status'      => $_GET['status']      ?? '',
     'urgency'     => $_GET['urgency']     ?? '',
@@ -18,7 +17,6 @@ $reports   = $result['rows'];
 $barangays = db_all('SELECT id, name FROM barangays WHERE is_active = 1 ORDER BY name');
 $staffList = db_all("SELECT id, full_name FROM users WHERE role IN ('barangay_official','welfare_org','system_admin') AND account_status = 'active' ORDER BY full_name");
 
-// Build pager URL pattern preserving filters
 $qBase = http_build_query(array_filter(array_merge($filters, ['page' => '%d'])));
 $pagerUrl = '?' . $qBase;
 
@@ -32,7 +30,6 @@ admin_nav('reports');
         <span class="text-muted"><?= (int)$result['total'] ?> report(s) found</span>
     </div>
 
-    <!-- Filter form -->
     <form method="get" class="row g-2 mb-4 align-items-end">
         <div class="col-sm-6 col-md-2">
             <label class="form-label small">Status</label>
@@ -80,12 +77,11 @@ admin_nav('reports');
         </div>
     </form>
 
-    <!-- Reports table -->
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>
                     <th>Photo</th>
                     <th>Title / Animal</th>
                     <th>Urgency</th>

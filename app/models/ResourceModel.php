@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 class ResourceModel
 {
-    /**
-     * List published resources, optionally filtered by category, newest first.
-     */
+
     public static function list_published(?int $categoryId, int $page): array
     {
         $params = [];
@@ -25,9 +23,6 @@ class ResourceModel
         return paginate($sql, $params, $page, 12);
     }
 
-    /**
-     * Find a single resource by id, JOINing category name.
-     */
     public static function find(int $id): ?array
     {
         return db_one(
@@ -40,9 +35,6 @@ class ResourceModel
         );
     }
 
-    /**
-     * Find a single resource by slug, JOINing category name.
-     */
     public static function find_by_slug(string $slug): ?array
     {
         return db_one(
@@ -55,9 +47,6 @@ class ResourceModel
         );
     }
 
-    /**
-     * List all resources for admin (includes unpublished), newest first.
-     */
     public static function list_admin(int $page): array
     {
         $sql = 'SELECT r.*, rc.name AS category_name
@@ -68,9 +57,6 @@ class ResourceModel
         return paginate($sql, [], $page, 20);
     }
 
-    /**
-     * Create a new resource and return its new id.
-     */
     public static function create(array $data): int
     {
         db_exec(
@@ -93,9 +79,6 @@ class ResourceModel
         return (int)db_insert_id();
     }
 
-    /**
-     * Update an existing resource.
-     */
     public static function update(int $id, array $data): void
     {
         db_exec(
@@ -124,9 +107,6 @@ class ResourceModel
         );
     }
 
-    /**
-     * Publish or unpublish a resource.
-     */
     public static function set_published(int $id, bool $published): void
     {
         if ($published) {
@@ -146,9 +126,6 @@ class ResourceModel
         }
     }
 
-    /**
-     * Return all active resource categories ordered by name.
-     */
     public static function categories(): array
     {
         return db_all(

@@ -1,5 +1,3 @@
-/* calendar-init.js — FullCalendar initializer for RePawter announcements */
-
 document.addEventListener('DOMContentLoaded', function () {
     var el = document.getElementById('calendar');
     if (!el) return;
@@ -27,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         eventDidMount: function (info) {
-            // Add tooltip with category label
+
             var cat = info.event.extendedProps.category || '';
             if (cat) {
                 info.el.setAttribute('title', cat.replace(/_/g, ' '));

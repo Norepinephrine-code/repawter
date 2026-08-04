@@ -14,7 +14,6 @@ admin_nav('criteria');
 <div class="container-fluid py-4">
     <h1 class="paw-page-title mb-4">Verification Criteria</h1>
 
-    <!-- Existing criteria -->
     <?php if (empty($criteria)): ?>
     <div class="alert alert-info">No criteria defined yet.</div>
     <?php else: ?>
@@ -80,7 +79,6 @@ admin_nav('criteria');
     </div>
     <?php endif; ?>
 
-    <!-- Add new criterion -->
     <div class="card paw-card">
         <div class="card-header fw-semibold">Add New Criterion</div>
         <div class="card-body">

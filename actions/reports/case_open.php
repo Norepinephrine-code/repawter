@@ -25,7 +25,6 @@ if (!$report) {
     redirect('/admin/reports/index.php');
 }
 
-// Ensure a case doesn't already exist for this report
 $existing = CaseModel::find_by_report($reportId);
 if ($existing) {
     flash('info', 'A case already exists for this report.');
@@ -34,7 +33,6 @@ if ($existing) {
 
 $newCaseId = CaseModel::create_from_report($reportId, user_id());
 
-// Advance report status to in_progress if it isn't terminal
 $terminalStatuses = ['resolved', 'archived'];
 if (!in_array($report['status'], $terminalStatuses, true)) {
     ReportModel::set_status($reportId, 'in_progress', user_id(), 'Case opened');

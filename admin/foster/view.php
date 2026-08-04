@@ -44,12 +44,12 @@ admin_nav('foster');
             <li class="breadcrumb-item">
                 <a href="<?= url('/admin/foster/index.php') ?>">Foster Applications</a>
             </li>
-            <li class="breadcrumb-item active">Application #<?= (int)$id ?></li>
+            <li class="breadcrumb-item active">Application
         </ol>
     </nav>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="paw-page-title mb-0">Foster Application #<?= (int)$id ?></h1>
+        <h1 class="paw-page-title mb-0">Foster Application
         <span class="badge fs-6 px-3 py-2 <?= e($badgeClass) ?>">
             <?= e($statusText) ?>
         </span>
@@ -67,7 +67,7 @@ admin_nav('foster');
     <?php endif; ?>
 
     <div class="row g-4">
-        <!-- Applicant info -->
+
         <div class="col-md-6">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">
@@ -98,7 +98,6 @@ admin_nav('foster');
             </div>
         </div>
 
-        <!-- Preferences -->
         <div class="col-md-6">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">
@@ -141,7 +140,6 @@ admin_nav('foster');
             </div>
         </div>
 
-        <!-- Decision notes (if already decided) -->
         <?php if (!empty($app['decision_notes'])): ?>
         <div class="col-12">
             <div class="card border-warning">
@@ -155,7 +153,6 @@ admin_nav('foster');
         </div>
         <?php endif; ?>
 
-        <!-- Approve / Reject actions -->
         <?php if ($isPending): ?>
         <div class="col-12">
             <div class="card paw-card">
@@ -164,7 +161,7 @@ admin_nav('foster');
                 </div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <!-- Approve -->
+
                         <div class="col-md-6">
                             <form method="post" action="<?= url('/actions/foster/foster_decide.php') ?>">
                                 <?= csrf_field() ?>
@@ -183,7 +180,6 @@ admin_nav('foster');
                             </form>
                         </div>
 
-                        <!-- Reject -->
                         <div class="col-md-6">
                             <form method="post" action="<?= url('/actions/foster/foster_decide.php') ?>">
                                 <?= csrf_field() ?>
@@ -207,7 +203,6 @@ admin_nav('foster');
         </div>
         <?php endif; ?>
 
-        <!-- Applicant History -->
         <div class="col-12">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">
@@ -221,7 +216,7 @@ admin_nav('foster');
                         <table class="table table-sm table-hover mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th>#</th>
+                                    <th>
                                     <th>Type</th>
                                     <th>Capacity</th>
                                     <th>Status</th>
@@ -243,7 +238,7 @@ admin_nav('foster');
                                     $hType   = $typeLabel[$h['preferred_animal_type']] ?? ucfirst($h['preferred_animal_type']);
                                 ?>
                                 <tr <?= (int)$h['id'] === $id ? 'class="table-active"' : '' ?>>
-                                    <td class="text-muted small">#<?= (int)$h['id'] ?></td>
+                                    <td class="text-muted small">
                                     <td><?= e($hType) ?></td>
                                     <td><?= (int)$h['current_foster_count'] ?> / <?= (int)$h['household_capacity'] ?></td>
                                     <td><span class="badge <?= e($hBadge) ?>"><?= e($hStatus) ?></span></td>
@@ -258,7 +253,7 @@ admin_nav('foster');
             </div>
         </div>
 
-    </div><!-- /row -->
+    </div>
 
     <div class="mt-4">
         <a href="<?= url('/admin/foster/index.php') ?>" class="btn btn-outline-secondary">

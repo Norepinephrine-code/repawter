@@ -1,8 +1,6 @@
 <?php
 require __DIR__ . '/../app/bootstrap.php';
 
-// Public page — no login required
-
 $page      = max(1, (int)($_GET['page'] ?? 1));
 $paginated = AnnouncementModel::list_published($page);
 $rows      = $paginated['rows'];
@@ -33,7 +31,6 @@ layout_header('Announcements', 'announcements');
     </div>
 </div>
 
-<!-- Calendar -->
 <div class="card paw-card mb-4">
     <div class="card-body p-3">
         <div id="calendar"
@@ -42,7 +39,6 @@ layout_header('Announcements', 'announcements');
     </div>
 </div>
 
-<!-- Category Legend -->
 <div class="d-flex flex-wrap gap-3 mb-4">
 <?php foreach ($categoryColors as $key => $color): ?>
     <span class="d-flex align-items-center gap-1 small">
@@ -52,7 +48,6 @@ layout_header('Announcements', 'announcements');
 <?php endforeach; ?>
 </div>
 
-<!-- Upcoming Published Announcements -->
 <h2 class="h5 fw-bold mb-3 text-paw-dark">Upcoming &amp; Recent Announcements</h2>
 
 <?php if (empty($rows)): ?>

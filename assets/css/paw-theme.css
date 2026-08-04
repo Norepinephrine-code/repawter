@@ -1,12 +1,3 @@
-/* RePawter — paw-theme.css
-   Warm palette layered over Bootstrap 5
-   ─────────────────────────────────────
-   Primary  : #F4794E  (warm coral/orange)
-   Secondary: #2A9D8F  (teal)
-   Dark     : #5C3D2E  (deep brown)
-   Cream bg : #FFF8F1
-*/
-
 :root {
   --paw-primary:        #F4794E;
   --paw-primary-dark:   #d9613a;
@@ -19,7 +10,6 @@
   --paw-shadow:         rgba(92, 61, 46, 0.12);
 }
 
-/* ── Global ─────────────────────────────────────── */
 body {
   background-color: var(--paw-cream);
   color: #3a2010;
@@ -34,7 +24,6 @@ a:hover {
   color: var(--paw-primary-dark);
 }
 
-/* ── Navbar ─────────────────────────────────────── */
 .paw-navbar {
   background-color: var(--paw-dark) !important;
   box-shadow: 0 2px 8px var(--paw-shadow);
@@ -54,7 +43,6 @@ a:hover {
   filter: invert(1);
 }
 
-/* ── Buttons ─────────────────────────────────────── */
 .btn-paw {
   background-color: var(--paw-primary);
   border-color:     var(--paw-primary);
@@ -107,7 +95,6 @@ a:hover {
   color: #fff;
 }
 
-/* ── Cards ─────────────────────────────────────── */
 .paw-card {
   background: #fff;
   border: 1px solid var(--paw-border);
@@ -121,7 +108,6 @@ a:hover {
   transform: translateY(-2px);
 }
 
-/* ── Hero ─────────────────────────────────────── */
 .paw-hero {
   background: linear-gradient(135deg, var(--paw-dark) 0%, #8b5e42 100%);
   color: #fff;
@@ -140,7 +126,6 @@ a:hover {
   opacity: 0.9;
 }
 
-/* ── Page Title ─────────────────────────────────── */
 .paw-page-title {
   color: var(--paw-dark);
   font-weight: 700;
@@ -150,7 +135,6 @@ a:hover {
   display: inline-block;
 }
 
-/* ── Status Badges ─────────────────────────────── */
 .badge-status--submitted {
   background-color: #6c757d;
   color: #fff;
@@ -191,7 +175,6 @@ a:hover {
   color: #ddd;
 }
 
-/* ── Urgency Pills ──────────────────────────────── */
 .urgency--low {
   background-color: #d1e7dd;
   color: #0a3622;
@@ -234,7 +217,6 @@ a:hover {
   50%       { opacity: 0.7; }
 }
 
-/* ── Pet Cards ──────────────────────────────────── */
 .pet-card {
   border: 1px solid var(--paw-border);
   border-radius: 14px;
@@ -264,7 +246,6 @@ a:hover {
   border-radius: 20px;
 }
 
-/* ── Photos ─────────────────────────────────────── */
 .report-photo {
   max-height: 340px;
   width: 100%;
@@ -281,7 +262,6 @@ a:hover {
   border: 2px solid var(--paw-border);
 }
 
-/* ── Admin sub-navigation (horizontal; scrolls on mobile) ── */
 .paw-admin-subnav {
   background-color: #fff;
   border: 1px solid var(--paw-border);
@@ -316,25 +296,21 @@ a:hover {
   font-weight: 600;
 }
 
-/* ── Alert overrides ────────────────────────────── */
 .alert {
   border-radius: 10px;
 }
 
-/* ── Form polish ────────────────────────────────── */
 .form-control:focus,
 .form-select:focus {
   border-color: var(--paw-primary);
   box-shadow: 0 0 0 0.2rem rgba(244, 121, 78, 0.25);
 }
 
-/* ── Table ──────────────────────────────────────── */
 .table > thead {
   background-color: var(--paw-dark);
   color: #fde8d8;
 }
 
-/* ── Utilities ──────────────────────────────────── */
 .text-paw {
   color: var(--paw-primary) !important;
 }
@@ -351,7 +327,6 @@ a:hover {
   border-color: var(--paw-border) !important;
 }
 
-/* ── Responsive tweaks ──────────────────────────── */
 .table-responsive { -webkit-overflow-scrolling: touch; }
 
 @media (max-width: 768px) {
@@ -369,6 +344,6 @@ a:hover {
     padding-left: 0.75rem;
     padding-right: 0.75rem;
   }
-  /* stack action buttons full-width on phones for easy tapping */
+
   .paw-actions-stack .btn { width: 100%; }
 }

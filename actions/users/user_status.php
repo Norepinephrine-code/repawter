@@ -24,30 +24,25 @@ $targetId = (int)$clean['id'];
 $status   = $clean['status'];
 $reason   = $clean['reason'] ?: null;
 
-// Guard: cannot change your own account
 if (user_id() === $targetId) {
     flash('error', 'You cannot change your own account status.');
     redirect('/admin/users/view.php?id=' . $targetId);
 }
 
-// Load target user
 $target = UserModel::find($targetId);
 if (!$target) {
     flash('error', 'User not found.');
     redirect('/admin/users/');
 }
 
-// Guard: barangay_official may only change residents; ROLE_ADMIN may change anyone
 $isTargetStaff = in_array($target['role'], [ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN], true);
 if (user_role() === ROLE_OFFICIAL && $isTargetStaff) {
     flash('error', 'Barangay officials may only change the status of community residents.');
     redirect('/admin/users/view.php?id=' . $targetId);
 }
 
-// Apply status change
 UserModel::set_status($targetId, $status, $reason);
 
-// Audit
 $action = match($status) {
     'flagged'    => 'account_flagged',
     'suspended'  => 'account_suspended',
@@ -56,7 +51,6 @@ $action = match($status) {
 };
 audit_log($action, 'user', $targetId, ['reason' => $reason], $targetId);
 
-// Notify user
 $statusLabel = ucfirst($status);
 notify(
     $targetId,

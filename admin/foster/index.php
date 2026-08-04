@@ -41,7 +41,6 @@ admin_nav('foster');
 <div class="container-fluid py-4">
     <h1 class="paw-page-title mb-3">Foster Applications</h1>
 
-    <!-- Filter -->
     <form method="get" class="row g-2 mb-4">
         <div class="col-auto">
             <select name="status" class="form-select form-select-sm" onchange="this.form.submit()">
@@ -62,7 +61,7 @@ admin_nav('foster');
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>
                     <th>Applicant</th>
                     <th>Preferred Type</th>
                     <th>Capacity</th>
@@ -84,7 +83,7 @@ admin_nav('foster');
                     $type       = $typeLabel[$app['preferred_animal_type']] ?? ucfirst($app['preferred_animal_type']);
                 ?>
                 <tr>
-                    <td class="text-muted small">#<?= (int)$app['id'] ?></td>
+                    <td class="text-muted small">
                     <td class="fw-semibold"><?= e($app['applicant_name']) ?></td>
                     <td><?= e($type) ?></td>
                     <td>
@@ -111,7 +110,6 @@ admin_nav('foster');
         </table>
     </div>
 
-    <!-- Pagination -->
     <?php
     $qStr = $filters['status'] ? 'status=' . urlencode($filters['status']) . '&' : '';
     echo render_pager($result, url('/admin/foster/index.php?' . $qStr . 'page=%d'));

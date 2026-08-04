@@ -17,14 +17,12 @@ layout_header('My Profile', 'profile');
 
         <h2 class="paw-page-title mb-4">My Profile</h2>
 
-        <!-- ─── Profile Details Form ─── -->
         <div class="paw-card card p-4 mb-4">
             <h5 class="fw-bold mb-3"><i class="bi bi-person-circle me-2 text-paw"></i>Account Information</h5>
 
             <form method="post" action="<?= url('/actions/auth/profile_update.php') ?>" novalidate>
                 <?= csrf_field() ?>
 
-                <!-- Email — read-only display -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Email Address</label>
                     <input
@@ -38,7 +36,7 @@ layout_header('My Profile', 'profile');
                 </div>
 
                 <?php if ($user['role'] === ROLE_WELFARE && $user['organization_name']): ?>
-                <!-- Organization name — read-only for welfare_org -->
+
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Organization Name</label>
                     <input
@@ -103,7 +101,6 @@ layout_header('My Profile', 'profile');
             </form>
         </div>
 
-        <!-- ─── Change Password Form ─── -->
         <div class="paw-card card p-4">
             <h5 class="fw-bold mb-3"><i class="bi bi-lock me-2 text-paw"></i>Change Password</h5>
 

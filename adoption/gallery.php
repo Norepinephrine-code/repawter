@@ -23,7 +23,6 @@ layout_header('Adopt a Pet — Gallery', 'gallery');
 
 <div class="container pb-5">
 
-    <!-- Filter bar -->
     <form method="get" action="<?= url('/adoption/gallery.php') ?>" class="row g-2 align-items-end mb-4">
         <div class="col-auto">
             <label class="form-label fw-semibold mb-1">Animal Type</label>
@@ -56,7 +55,6 @@ layout_header('Adopt a Pet — Gallery', 'gallery');
     </div>
     <?php endif; ?>
 
-    <!-- Pagination -->
     <?php
     $queryBase = $filters['animal_type'] !== ''
         ? url('/adoption/gallery.php?animal_type=' . urlencode($filters['animal_type']) . '&page=%d')

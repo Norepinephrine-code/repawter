@@ -32,7 +32,6 @@ $petTypeLabel = match ($app['pet_animal_type'] ?? 'other') {
     default => $app['pet_species_other'] ?? 'Other',
 };
 
-// Check for existing agreement
 $agreement = AdoptionModel::find_agreement($id);
 
 layout_header('Application #' . $id, 'adoption');
@@ -43,12 +42,12 @@ admin_nav('adoption');
     <nav aria-label="breadcrumb" class="mb-3">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= url('/admin/adoption/index.php') ?>">Applications</a></li>
-            <li class="breadcrumb-item active">Application #<?= (int)$id ?></li>
+            <li class="breadcrumb-item active">Application
         </ol>
     </nav>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <h1 class="paw-page-title mb-0">Adoption Application #<?= (int)$id ?></h1>
+        <h1 class="paw-page-title mb-0">Adoption Application
         <span class="badge fs-6 px-3 py-2
             <?= in_array($app['status'], ['approved','completed'], true) ? 'bg-success' : ($app['status'] === 'rejected' ? 'bg-danger' : 'bg-secondary') ?>">
             <?= e($statusLabel) ?>
@@ -56,7 +55,7 @@ admin_nav('adoption');
     </div>
 
     <div class="row g-4">
-        <!-- Applicant info -->
+
         <div class="col-md-6">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">
@@ -87,7 +86,6 @@ admin_nav('adoption');
             </div>
         </div>
 
-        <!-- Pet info -->
         <div class="col-md-6">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">
@@ -116,7 +114,6 @@ admin_nav('adoption');
             </div>
         </div>
 
-        <!-- Message -->
         <div class="col-12">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">
@@ -132,7 +129,6 @@ admin_nav('adoption');
             </div>
         </div>
 
-        <!-- Decision notes (if any) -->
         <?php if (!empty($app['decision_notes'])): ?>
         <div class="col-12">
             <div class="card border-warning">
@@ -144,14 +140,13 @@ admin_nav('adoption');
         </div>
         <?php endif; ?>
 
-        <!-- Action buttons -->
         <?php if (in_array($app['status'], ['submitted', 'under_review'], true)): ?>
         <div class="col-12">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Actions</div>
                 <div class="card-body">
                     <div class="row g-3">
-                        <!-- Approve -->
+
                         <div class="col-md-6">
                             <form method="post" action="<?= url('/actions/adoption/adoption_decide.php') ?>">
                                 <?= csrf_field() ?>
@@ -163,7 +158,7 @@ admin_nav('adoption');
                                 </button>
                             </form>
                         </div>
-                        <!-- Reject -->
+
                         <div class="col-md-6">
                             <form method="post" action="<?= url('/actions/adoption/adoption_decide.php') ?>">
                                 <?= csrf_field() ?>
@@ -185,7 +180,6 @@ admin_nav('adoption');
         </div>
         <?php endif; ?>
 
-        <!-- Mark Completed (when approved) -->
         <?php if ($app['status'] === 'approved'): ?>
         <div class="col-12">
             <div class="card paw-card">
@@ -208,7 +202,6 @@ admin_nav('adoption');
         </div>
         <?php endif; ?>
 
-        <!-- PDF Agreement button -->
         <?php if (in_array($app['status'], ['approved', 'completed'], true)): ?>
         <div class="col-12">
             <div class="card border-info">
@@ -217,7 +210,7 @@ admin_nav('adoption');
                         <h6 class="fw-semibold mb-1">Adoption Agreement PDF</h6>
                         <?php if ($agreement !== null): ?>
                         <p class="text-muted small mb-0">
-                            Agreement #<?= e($agreement['agreement_number']) ?> &bull;
+                            Agreement
                             Generated <?= e(date('M d, Y', strtotime($agreement['generated_at']))) ?>
                         </p>
                         <?php else: ?>
@@ -234,7 +227,7 @@ admin_nav('adoption');
         </div>
         <?php endif; ?>
 
-    </div><!-- /row -->
+    </div>
 
     <div class="mt-3">
         <a href="<?= url('/admin/adoption/index.php') ?>" class="btn btn-outline-secondary">

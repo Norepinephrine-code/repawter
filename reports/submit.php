@@ -5,7 +5,6 @@ require __DIR__ . '/../app/bootstrap.php';
 
 require_role(ROLE_RESIDENT);
 
-// Load barangays for dropdown
 $barangays = db_all("SELECT id, name FROM barangays WHERE is_active = 1 ORDER BY name ASC", []);
 
 layout_header('Report an Animal', 'report');
@@ -27,7 +26,6 @@ layout_header('Report an Animal', 'report');
                       novalidate>
                     <?= csrf_field() ?>
 
-                    <!-- Animal Type -->
                     <div class="mb-3">
                         <label for="animal_type" class="form-label fw-semibold">Animal Type <span class="text-danger">*</span></label>
                         <select name="animal_type" id="animal_type"
@@ -40,7 +38,6 @@ layout_header('Report an Animal', 'report');
                         </select>
                     </div>
 
-                    <!-- Species (shown only when 'other') -->
                     <div class="mb-3" id="species_other_wrap"
                          style="display:<?= old('animal_type') === 'other' ? 'block' : 'none' ?>;">
                         <label for="species_other" class="form-label fw-semibold">Specify Species</label>
@@ -50,7 +47,6 @@ layout_header('Report an Animal', 'report');
                                placeholder="e.g. rabbit, bird…">
                     </div>
 
-                    <!-- Title (optional) -->
                     <div class="mb-3">
                         <label for="title" class="form-label fw-semibold">Report Title <span class="text-muted small">(optional)</span></label>
                         <input type="text" name="title" id="title"
@@ -59,7 +55,6 @@ layout_header('Report an Animal', 'report');
                                placeholder="Brief headline for your report">
                     </div>
 
-                    <!-- Description -->
                     <div class="mb-3">
                         <label for="description" class="form-label fw-semibold">Description <span class="text-danger">*</span></label>
                         <textarea name="description" id="description"
@@ -67,7 +62,6 @@ layout_header('Report an Animal', 'report');
                                   placeholder="Describe the animal's condition, behaviour, and any other relevant details."><?= e(old('description')) ?></textarea>
                     </div>
 
-                    <!-- Barangay -->
                     <div class="mb-3">
                         <label for="barangay_id" class="form-label fw-semibold">Barangay <span class="text-danger">*</span></label>
                         <select name="barangay_id" id="barangay_id" class="form-select" required>
@@ -81,7 +75,6 @@ layout_header('Report an Animal', 'report');
                         </select>
                     </div>
 
-                    <!-- Location Address -->
                     <div class="mb-3">
                         <label for="location_address" class="form-label fw-semibold">Location / Address <span class="text-danger">*</span></label>
                         <input type="text" name="location_address" id="location_address"
@@ -90,7 +83,6 @@ layout_header('Report an Animal', 'report');
                                placeholder="Street, purok, or recognisable address">
                     </div>
 
-                    <!-- Landmark (optional) -->
                     <div class="mb-3">
                         <label for="location_landmark" class="form-label fw-semibold">Landmark <span class="text-muted small">(optional)</span></label>
                         <input type="text" name="location_landmark" id="location_landmark"
@@ -99,7 +91,6 @@ layout_header('Report an Animal', 'report');
                                placeholder="Near the school, behind the market…">
                     </div>
 
-                    <!-- Urgency -->
                     <div class="mb-3">
                         <label class="form-label fw-semibold">Urgency Level <span class="text-danger">*</span></label>
                         <div class="d-flex flex-wrap gap-3">
@@ -117,7 +108,6 @@ layout_header('Report an Animal', 'report');
                         </div>
                     </div>
 
-                    <!-- Photo -->
                     <div class="mb-4">
                         <label for="photo" class="form-label fw-semibold">Photo <span class="text-danger">*</span></label>
                         <input type="file" name="photo" id="photo"
@@ -148,7 +138,6 @@ function toggleSpeciesOther(val) {
     document.getElementById('species_other_wrap').style.display = (val === 'other') ? 'block' : 'none';
 }
 
-// Live photo preview
 document.getElementById('photo').addEventListener('change', function () {
     const preview = document.getElementById('photo_preview');
     const file    = this.files[0];

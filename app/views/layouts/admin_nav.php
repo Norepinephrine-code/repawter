@@ -1,5 +1,5 @@
 <?php
-/** @var string $active Active nav key */
+
 $active = $active ?? '';
 
 $navItems = [

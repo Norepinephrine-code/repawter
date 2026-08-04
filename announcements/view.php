@@ -1,8 +1,6 @@
 <?php
 require __DIR__ . '/../app/bootstrap.php';
 
-// Public page — no login required
-
 $id = (int)($_GET['id'] ?? 0);
 if ($id <= 0) {
     redirect('/announcements/calendar.php');
@@ -54,15 +52,12 @@ layout_header(e($ann['title']), 'announcements');
         <div class="card paw-card">
             <div class="card-body p-4">
 
-                <!-- Category Badge -->
                 <span class="badge mb-3" style="background-color:<?= e($color) ?>; font-size:.85em;">
                     <?= e($label) ?>
                 </span>
 
-                <!-- Title -->
                 <h1 class="paw-page-title h2 mb-3"><?= e($ann['title']) ?></h1>
 
-                <!-- Meta row -->
                 <div class="d-flex flex-wrap gap-3 text-muted small mb-4">
                     <span>
                         <i class="bi bi-person-fill"></i>
@@ -82,7 +77,6 @@ layout_header(e($ann['title']), 'announcements');
                     <?php endif; ?>
                 </div>
 
-                <!-- Event date/time + location -->
                 <?php if ($ann['event_start']): ?>
                     <div class="alert alert-light border mb-4">
                         <div class="fw-semibold mb-1">
@@ -115,12 +109,10 @@ layout_header(e($ann['title']), 'announcements');
                     </div>
                 <?php endif; ?>
 
-                <!-- Body -->
                 <div class="announcement-body lh-lg">
                     <?= nl2br(e($ann['body'])) ?>
                 </div>
 
-                <!-- Facebook post link + embed -->
                 <?php if (!empty($ann['facebook_url'])): ?>
                     <div class="mt-4 pt-4 border-top">
                         <h5 class="fw-semibold mb-3">
@@ -149,8 +141,8 @@ layout_header(e($ann['title']), 'announcements');
                     </div>
                 <?php endif; ?>
 
-            </div><!-- /card-body -->
-        </div><!-- /card -->
+            </div>
+        </div>
 
         <div class="mt-3">
             <a href="<?= url('/announcements/calendar.php') ?>" class="btn btn-paw-outline">

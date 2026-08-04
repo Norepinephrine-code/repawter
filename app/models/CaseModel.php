@@ -3,17 +3,7 @@ declare(strict_types=1);
 
 class CaseModel
 {
-    // -------------------------------------------------------------------------
-    // CREATE
-    // -------------------------------------------------------------------------
 
-    /**
-     * Open a new case from an existing report.
-     * Generates case_number = CASE-<year>-<6-digit zero-padded sequential>.
-     * Copies animal_type from the report.
-     * Inserts initial case_updates row with to_status = 'open'.
-     * Returns the new case id.
-     */
     public static function create_from_report(int $reportId, int $managedBy): int
     {
         $report = db_one('SELECT animal_type FROM reports WHERE id = ?', [$reportId]);
@@ -35,7 +25,6 @@ class CaseModel
 
         $caseId = (int) db_insert_id();
 
-        // Initial update row
         db_exec(
             'INSERT INTO case_updates
                 (case_id, from_status, to_status, note, created_by, created_at)
@@ -46,14 +35,6 @@ class CaseModel
         return $caseId;
     }
 
-    // -------------------------------------------------------------------------
-    // READ
-    // -------------------------------------------------------------------------
-
-    /**
-     * Return a case row joined with report title, barangay, and manager full_name.
-     * Also joins pet name.
-     */
     public static function find(int $id): ?array
     {
         return db_one(
@@ -73,7 +54,6 @@ class CaseModel
         );
     }
 
-    /** Return a case by its linked report_id, or null if none. */
     public static function find_by_report(int $reportId): ?array
     {
         return db_one(
@@ -88,11 +68,6 @@ class CaseModel
         );
     }
 
-    /**
-     * Paginated, filtered list of cases.
-     * Supported filter keys: status.
-     * Joined with report title, barangay name, manager name.
-     */
     public static function list_filtered(array $filters, int $page): array
     {
         $where  = [];
@@ -119,14 +94,6 @@ class CaseModel
         return paginate($sql, $params, $page);
     }
 
-    // -------------------------------------------------------------------------
-    // UPDATE
-    // -------------------------------------------------------------------------
-
-    /**
-     * Update case status; sets closed_at when status is terminal.
-     * Records a case_updates row with from/to statuses and optional note.
-     */
     public static function update_status(int $id, string $newStatus, int $by, ?string $note): void
     {
         $current    = db_one('SELECT status FROM cases WHERE id = ?', [$id]);
@@ -150,7 +117,6 @@ class CaseModel
         );
     }
 
-    /** Insert a note-only case_updates row (no status change). */
     public static function add_update(int $caseId, string $note, int $by): void
     {
         db_exec(
@@ -161,7 +127,6 @@ class CaseModel
         );
     }
 
-    /** Link a pet profile to a case. */
     public static function link_pet(int $caseId, int $petId): void
     {
         db_exec(
@@ -170,10 +135,6 @@ class CaseModel
         );
     }
 
-    /**
-     * Return all case_updates rows for a case, oldest first,
-     * joined with author full_name.
-     */
     public static function updates_for(int $caseId): array
     {
         return db_all(

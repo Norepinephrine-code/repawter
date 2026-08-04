@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= e($title ?? '') ?><?= isset($title) && $title !== '' ? ' &middot; ' : '' ?><?= e(APP_NAME) ?></title>
 
-    <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Bootstrap Icons -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- FullCalendar CSS -->
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.css">
-    <!-- RePawter Theme -->
+
     <link rel="stylesheet" href="<?= asset('/css/paw-theme.css') ?>">
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-lg paw-navbar">
     <div class="container">
         <a class="navbar-brand fw-bold" href="<?= url('/') ?>">
@@ -75,7 +73,7 @@
 
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
 <?php if (is_logged_in()): ?>
-                <!-- Notification Bell -->
+
                 <li class="nav-item me-2">
                     <a class="nav-link position-relative" href="<?= url('/notifications/') ?>" title="Notifications">
                         <i class="bi bi-bell-fill fs-5"></i>
@@ -88,7 +86,7 @@
 <?php   endif; ?>
                     </a>
                 </li>
-                <!-- Profile Dropdown -->
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="profileDropdown"
                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -124,7 +122,6 @@
     </div>
 </nav>
 
-<!-- Flash Messages -->
 <?php foreach (get_flashes() as $flash): ?>
 <?php
     $alertClass = match ($flash['type']) {

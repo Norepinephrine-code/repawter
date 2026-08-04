@@ -14,7 +14,6 @@ if ($id > 0) {
     }
 }
 
-// Load barangays for the select
 $barangays = db_all("SELECT id, name FROM barangays WHERE is_active = 1 ORDER BY name");
 
 $categories = [
@@ -55,7 +54,6 @@ admin_nav('announcements');
                         <input type="hidden" name="id" value="<?= (int)$ann['id'] ?>">
                     <?php endif; ?>
 
-                    <!-- Category -->
                     <div class="mb-3">
                         <label for="category" class="form-label fw-semibold">
                             Category <span class="text-danger">*</span>
@@ -70,7 +68,6 @@ admin_nav('announcements');
                         </select>
                     </div>
 
-                    <!-- Title -->
                     <div class="mb-3">
                         <label for="title" class="form-label fw-semibold">
                             Title <span class="text-danger">*</span>
@@ -80,7 +77,6 @@ admin_nav('announcements');
                                value="<?= e(old('title', $ann['title'] ?? '')) ?>">
                     </div>
 
-                    <!-- Body -->
                     <div class="mb-3">
                         <label for="body" class="form-label fw-semibold">
                             Body <span class="text-danger">*</span>
@@ -88,7 +84,6 @@ admin_nav('announcements');
                         <textarea id="body" name="body" class="form-control" rows="8" required><?= e(old('body', $ann['body'] ?? '')) ?></textarea>
                     </div>
 
-                    <!-- Location -->
                     <div class="mb-3">
                         <label for="location_text" class="form-label fw-semibold">Location</label>
                         <input type="text" id="location_text" name="location_text" class="form-control"
@@ -96,7 +91,6 @@ admin_nav('announcements');
                                placeholder="e.g. Barangay Hall, San Jose Street">
                     </div>
 
-                    <!-- Event dates -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-5">
                             <label for="event_start" class="form-label fw-semibold">Event Start</label>
@@ -120,7 +114,6 @@ admin_nav('announcements');
                         </div>
                     </div>
 
-                    <!-- Facebook URL -->
                     <div class="mb-3">
                         <label for="facebook_url" class="form-label fw-semibold">Facebook Post URL</label>
                         <input type="url" id="facebook_url" name="facebook_url" class="form-control"
@@ -128,7 +121,6 @@ admin_nav('announcements');
                                value="<?= e(old('facebook_url', $ann['facebook_url'] ?? '')) ?>">
                     </div>
 
-                    <!-- Status + Publish At -->
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
                             <label for="status" class="form-label fw-semibold">
@@ -164,7 +156,6 @@ admin_nav('announcements');
                         </div>
                     </div>
 
-                    <!-- Submit -->
                     <div class="d-flex gap-2 justify-content-end pt-2">
                         <a href="<?= url('/admin/announcements/index.php') ?>"
                            class="btn btn-outline-secondary">Cancel</a>

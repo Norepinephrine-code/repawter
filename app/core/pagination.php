@@ -33,7 +33,6 @@ function render_pager(array $p, string $urlPattern): string
 
     $html = '<nav aria-label="Page navigation"><ul class="pagination justify-content-center flex-wrap">';
 
-    // Previous
     if ($current > 1) {
         $html .= '<li class="page-item">'
                . '<a class="page-link" href="' . htmlspecialchars(sprintf($urlPattern, $current - 1), ENT_QUOTES, 'UTF-8') . '">'
@@ -42,7 +41,6 @@ function render_pager(array $p, string $urlPattern): string
         $html .= '<li class="page-item disabled"><span class="page-link">&laquo; Prev</span></li>';
     }
 
-    // Page numbers (window of ±3)
     $start = max(1, $current - 3);
     $end   = min($total, $current + 3);
 
@@ -70,7 +68,6 @@ function render_pager(array $p, string $urlPattern): string
                . $total . '</a></li>';
     }
 
-    // Next
     if ($current < $total) {
         $html .= '<li class="page-item">'
                . '<a class="page-link" href="' . htmlspecialchars(sprintf($urlPattern, $current + 1), ENT_QUOTES, 'UTF-8') . '">'

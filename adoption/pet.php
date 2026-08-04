@@ -44,7 +44,7 @@ layout_header(e($pet['name']) . ' — Pet Profile', 'gallery');
     </nav>
 
     <div class="row g-4">
-        <!-- Photo -->
+
         <div class="col-md-5">
             <img src="<?= e($photoUrl) ?>"
                  alt="Photo of <?= e($pet['name']) ?>"
@@ -52,7 +52,6 @@ layout_header(e($pet['name']) . ' — Pet Profile', 'gallery');
                  style="max-height:400px; object-fit:cover;">
         </div>
 
-        <!-- Details -->
         <div class="col-md-7">
             <h1 class="paw-page-title"><?= e($pet['name']) ?></h1>
 
@@ -111,7 +110,6 @@ layout_header(e($pet['name']) . ' — Pet Profile', 'gallery');
             <p><?= nl2br(e($pet['description'])) ?></p>
             <?php endif; ?>
 
-            <!-- Adoption button area -->
             <div class="mt-4">
                 <?php if ($pet['status'] !== 'available'): ?>
                     <span class="badge bg-secondary fs-6 px-3 py-2">

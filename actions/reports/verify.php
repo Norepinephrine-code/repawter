@@ -27,11 +27,9 @@ if (!$report) {
     redirect('/admin/reports/index.php');
 }
 
-// Build responses array from posted is_met[] and note[]
 $postedMet   = is_array($_POST['is_met']  ?? null) ? $_POST['is_met']  : [];
 $postedNotes = is_array($_POST['note']    ?? null) ? $_POST['note']    : [];
 
-// Collect all active criteria so unchecked ones get explicitly is_met=0
 $criteria = ReportModel::active_criteria();
 $responses = [];
 foreach ($criteria as $c) {

@@ -10,7 +10,6 @@ require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
 $id = isset($_POST['id']) && $_POST['id'] !== '' ? (int)$_POST['id'] : 0;
 
-// Quick-publish shortcut (from the index table)
 $quickPublish = !empty($_POST['_quick_publish']);
 
 if ($quickPublish && $id > 0) {
@@ -29,10 +28,6 @@ if ($quickPublish && $id > 0) {
     redirect('/admin/announcements/index.php');
 }
 
-// ------------------------------------------------------------------
-// Full save / create / update
-// ------------------------------------------------------------------
-
 $validCategories = ['vaccination_drive', 'adoption_event', 'tnr_schedule', 'welfare_operation', 'general'];
 $validStatuses   = ['draft', 'scheduled', 'published'];
 
@@ -49,7 +44,6 @@ $validStatuses   = ['draft', 'scheduled', 'published'];
     'barangay_id'   => 'nullable',
 ]);
 
-// Validate facebook_url format if provided
 if (!empty($clean['facebook_url'])) {
     if (!filter_var($clean['facebook_url'], FILTER_VALIDATE_URL)) {
         $errors['facebook_url'] = 'Facebook URL must be a valid URL.';
@@ -65,7 +59,6 @@ if (!empty($errors)) {
     redirect($back);
 }
 
-// Normalize empty datetime strings to null
 $nullableFields = ['event_start', 'event_end', 'publish_at'];
 foreach ($nullableFields as $f) {
     if (isset($clean[$f]) && trim($clean[$f]) === '') {
@@ -73,21 +66,19 @@ foreach ($nullableFields as $f) {
     }
 }
 
-// Normalize nullable strings
 foreach (['location_text', 'facebook_url', 'barangay_id'] as $f) {
     if (isset($clean[$f]) && trim($clean[$f]) === '') {
         $clean[$f] = null;
     }
 }
 
-// is_all_day comes as checkbox ('1' or absent)
 $isAllDay = !empty($_POST['is_all_day']) ? 1 : 0;
 
 $wasPublished = false;
 $prevStatus   = null;
 
 if ($id > 0) {
-    // Update existing
+
     $existing   = AnnouncementModel::find($id);
     $prevStatus = $existing['status'] ?? null;
 
@@ -111,7 +102,7 @@ if ($id > 0) {
     $wasPublished = ($clean['status'] === 'published' && $prevStatus !== 'published');
     flash('success', 'Announcement updated.');
 } else {
-    // Create new
+
     $publishedAt = $clean['status'] === 'published' ? date('Y-m-d H:i:s') : null;
 
     $id = AnnouncementModel::create([
@@ -134,7 +125,6 @@ if ($id > 0) {
     flash('success', 'Announcement created.');
 }
 
-// Notify residents when an announcement becomes published for the first time
 if ($wasPublished) {
     notify_role(
         ROLE_RESIDENT,

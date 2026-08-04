@@ -1,5 +1,5 @@
 <?php
-/** @var array $pet */
+
 $photoUrl = !empty($pet['photo_path'])
     ? upload_url($pet['photo_path'])
     : asset('/img/placeholder-pet.png');

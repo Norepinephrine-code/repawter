@@ -94,9 +94,6 @@ class UserModel
         );
     }
 
-    /**
-     * Returns paginate() result. Supports filters: role, status, search (on name/email).
-     */
     public static function list_filtered(array $filters, int $page): array
     {
         $where  = ['1=1'];
@@ -128,9 +125,6 @@ class UserModel
         return paginate($sql, $params, $page);
     }
 
-    /**
-     * Sets account_status; stores flagged_reason when status is 'flagged'.
-     */
     public static function set_status(int $id, string $status, ?string $reason): void
     {
         db_exec(
@@ -143,10 +137,6 @@ class UserModel
         );
     }
 
-    /**
-     * Returns counts keyed by role string.
-     * e.g. ['community_resident' => 5, 'barangay_official' => 2, ...]
-     */
     public static function count_by_role(): array
     {
         $rows = db_all(

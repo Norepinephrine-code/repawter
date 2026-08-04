@@ -27,7 +27,6 @@ if (!$report) {
     redirect('/admin/reports/index.php');
 }
 
-// Validate assignee exists and is active staff
 $assignee = db_one(
     "SELECT id, full_name, email FROM users WHERE id = ? AND role IN ('barangay_official','welfare_org') AND account_status = 'active'",
     [$assigneeId]

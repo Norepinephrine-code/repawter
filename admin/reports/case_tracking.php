@@ -6,7 +6,7 @@ require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 $caseId = (int)($_GET['id'] ?? 0);
 
 if (!$caseId) {
-    // List mode
+
     $filters = ['status' => $_GET['status'] ?? ''];
     $page    = max(1, (int)($_GET['page'] ?? 1));
     $result  = CaseModel::list_filtered($filters, $page);
@@ -43,7 +43,7 @@ if (!$caseId) {
             <table class="table table-hover align-middle">
                 <thead class="table-light">
                     <tr>
-                        <th>Case #</th>
+                        <th>Case
                         <th>Report</th>
                         <th>Status</th>
                         <th>Manager</th>
@@ -77,7 +77,7 @@ if (!$caseId) {
     <?php layout_footer(); ?>
     <?php
 } else {
-    // Detail mode
+
     $case = CaseModel::find($caseId);
     if (!$case) {
         flash('error', 'Case not found.');
@@ -101,7 +101,7 @@ if (!$caseId) {
 
         <div class="row g-4">
             <div class="col-lg-5">
-                <!-- Case details -->
+
                 <div class="paw-card p-3 mb-3">
                     <h6 class="fw-semibold mb-3">Case Details</h6>
                     <dl class="row small mb-0">
@@ -148,7 +148,6 @@ if (!$caseId) {
                     </dl>
                 </div>
 
-                <!-- Update timeline -->
                 <div class="paw-card p-3">
                     <h6 class="fw-semibold mb-3">Update Timeline</h6>
                     <?php if (empty($updates)): ?>
@@ -182,7 +181,7 @@ if (!$caseId) {
             </div>
 
             <div class="col-lg-7">
-                <!-- Update status -->
+
                 <div class="paw-card p-3 mb-3">
                     <h6 class="fw-semibold mb-3">Update Case Status</h6>
                     <form method="post" action="<?= url('/actions/reports/case_update.php') ?>">
@@ -204,7 +203,6 @@ if (!$caseId) {
                     </form>
                 </div>
 
-                <!-- Add note -->
                 <div class="paw-card p-3 mb-3">
                     <h6 class="fw-semibold mb-3">Add Note</h6>
                     <form method="post" action="<?= url('/actions/reports/case_update.php') ?>">
@@ -218,7 +216,6 @@ if (!$caseId) {
                     </form>
                 </div>
 
-                <!-- Link pet -->
                 <div class="paw-card p-3">
                     <h6 class="fw-semibold mb-3">Link Pet Profile</h6>
                     <form method="post" action="<?= url('/actions/reports/case_update.php') ?>">

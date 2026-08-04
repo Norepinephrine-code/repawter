@@ -97,7 +97,6 @@ layout_header('My Foster Applications', 'foster');
         <?php endforeach; ?>
     </div>
 
-    <!-- Pagination -->
     <div class="mt-4">
         <?= render_pager($result, url('/foster/my_applications.php?page=%d')) ?>
     </div>

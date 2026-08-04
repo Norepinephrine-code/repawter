@@ -17,7 +17,6 @@ csrf_verify();
     'password_confirm' => 'required',
 ]);
 
-// Password confirmation check
 if (empty($errors['password']) && empty($errors['password_confirm'])) {
     if ($_POST['password'] !== $_POST['password_confirm']) {
         $errors['password_confirm'] = 'Passwords do not match.';
@@ -33,7 +32,7 @@ if (!empty($errors)) {
 $result = register_resident($clean);
 
 if (is_array($result) && isset($result['errors'])) {
-    // Foundation returned validation errors (e.g. duplicate email)
+
     flash_old($_POST);
     foreach ($result['errors'] as $msg) {
         flash('error', $msg);
@@ -41,7 +40,6 @@ if (is_array($result) && isset($result['errors'])) {
     redirect('/auth/register.php');
 }
 
-// Auto-login
 $newUser = UserModel::find((int)$result);
 if ($newUser) {
     set_current_user($newUser);

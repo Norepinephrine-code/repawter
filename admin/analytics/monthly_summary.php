@@ -3,7 +3,6 @@ require __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
-// Resolve month parameter (default: current month)
 $month = trim($_GET['month'] ?? '');
 if (!preg_match('/^\d{4}-\d{2}$/', $month)) {
     $month = date('Y-m');
@@ -11,9 +10,8 @@ if (!preg_match('/^\d{4}-\d{2}$/', $month)) {
 $export = isset($_GET['export']) && $_GET['export'] === 'csv';
 
 $monthStart = $month . '-01';
-$monthEnd   = date('Y-m-t', strtotime($monthStart)); // last day of month
+$monthEnd   = date('Y-m-t', strtotime($monthStart));
 
-// --- Data queries ---
 $totalReports = db_one(
     "SELECT COUNT(*) AS cnt FROM reports WHERE DATE_FORMAT(created_at,'%Y-%m') = ?",
     [$month]
@@ -68,11 +66,10 @@ $casesClosed = db_one(
     [$month]
 );
 
-// --- CSV Export ---
 if ($export) {
     header('Content-Type: text/csv; charset=UTF-8');
     header('Content-Disposition: attachment; filename="repawter-summary-' . $month . '.csv"');
-    echo "\xEF\xBB\xBF"; // UTF-8 BOM for Excel
+    echo "\xEF\xBB\xBF";
 
     $out = fopen('php://output', 'w');
 
@@ -124,7 +121,6 @@ if ($export) {
     exit;
 }
 
-// --- HTML output ---
 layout_header('Monthly Summary — ' . $month, 'admin');
 admin_nav('analytics');
 ?>
@@ -133,7 +129,7 @@ admin_nav('analytics');
 @media print {
     .paw-admin-subnav, .paw-navbar, footer, .no-print { display: none !important; }
     .container-fluid { padding: 0 !important; }
-    .card { border: 1px solid #ccc !important; break-inside: avoid; }
+    .card { border: 1px solid
 }
 </style>
 
@@ -163,7 +159,6 @@ admin_nav('analytics');
         <h4><?= e($month) ?></h4>
     </div>
 
-    <!-- Summary Row -->
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-md-3">
             <div class="card paw-card text-center">
@@ -200,7 +195,7 @@ admin_nav('analytics');
     </div>
 
     <div class="row g-4">
-        <!-- By Status -->
+
         <div class="col-md-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Reports by Status</div>
@@ -223,7 +218,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- By Urgency -->
         <div class="col-md-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Reports by Urgency</div>
@@ -246,7 +240,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- By Barangay -->
         <div class="col-md-12">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Reports by Barangay</div>
@@ -269,7 +262,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Foster & Adoption -->
         <div class="col-md-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">New Foster Applications</div>

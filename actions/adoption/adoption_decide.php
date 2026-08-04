@@ -35,7 +35,7 @@ $applicantId = (int)$app['applicant_id'];
 switch ($clean['decision']) {
     case 'approve':
         AdoptionModel::decide($id, 'approved', $reviewer, $notes);
-        // Optionally mark pet pending_adoption
+
         PetModel::set_status((int)$app['pet_id'], 'pending_adoption');
         notify(
             $applicantId,

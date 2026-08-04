@@ -26,16 +26,14 @@ if (!empty($errors)) {
     redirect($back);
 }
 
-// --- Slug generation ---
 $slug = sanitize_string($_POST['slug'] ?? '');
 if ($slug === '') {
-    // Auto-generate from title
+
     $slug = strtolower($clean['title']);
     $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
     $slug = trim($slug, '-');
 }
 
-// Ensure slug uniqueness
 $baseSlug  = $slug;
 $suffix    = 1;
 while (true) {
@@ -44,13 +42,12 @@ while (true) {
         [$slug]
     );
     if ($existing === null || (int)$existing['id'] === $id) {
-        break; // slug is free (or belongs to the record we're editing)
+        break;
     }
     $suffix++;
     $slug = $baseSlug . '-' . $suffix;
 }
 
-// --- Cover image upload ---
 $coverPath = null;
 if (isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE) {
     $upload = handle_upload($_FILES['cover'], 'resources');
@@ -67,7 +64,6 @@ if (isset($_FILES['cover']) && $_FILES['cover']['error'] !== UPLOAD_ERR_NO_FILE)
 
 $isPublished = (int)($clean['is_published'] ?? 0) === 1;
 
-// Determine published_at: only set when publishing for the first time
 $publishedAt = null;
 if ($isPublished) {
     if ($id !== null) {

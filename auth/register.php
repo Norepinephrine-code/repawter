@@ -6,7 +6,6 @@ if (is_logged_in()) {
     redirect('/');
 }
 
-// Populate barangay dropdown
 $barangays = db_all(
     'SELECT id, name, municipality FROM barangays WHERE is_active = 1 ORDER BY name'
 );

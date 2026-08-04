@@ -36,7 +36,6 @@ admin_nav('users');
         <span class="text-muted"><?= (int)$result['total'] ?> user(s) found</span>
     </div>
 
-    <!-- Filter form -->
     <form method="get" class="row g-2 mb-4 align-items-end">
         <div class="col-sm-6 col-md-3">
             <label class="form-label small">Role</label>
@@ -66,12 +65,11 @@ admin_nav('users');
         </div>
     </form>
 
-    <!-- Users Table -->
     <div class="table-responsive">
         <table class="table table-hover align-middle">
             <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>
                     <th>Name</th>
                     <th>Email</th>
                     <th>Role</th>

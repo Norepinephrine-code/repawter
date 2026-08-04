@@ -15,7 +15,6 @@ if (!$user) {
     redirect('/admin/users/');
 }
 
-// Activity summary
 $reportCount = (int)(db_one(
     'SELECT COUNT(*) AS cnt FROM reports WHERE reporter_id = ?',
     [$id]
@@ -61,7 +60,7 @@ admin_nav('users');
     </div>
 
     <div class="row g-4">
-        <!-- Profile -->
+
         <div class="col-lg-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Profile Details</div>
@@ -102,7 +101,6 @@ admin_nav('users');
             </div>
         </div>
 
-        <!-- Activity Summary -->
         <div class="col-lg-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Activity Summary</div>
@@ -125,12 +123,11 @@ admin_nav('users');
             </div>
         </div>
 
-        <!-- Account Status Controls -->
         <?php
         $myId    = user_id();
         $myRole  = user_role();
-        $canEdit = ($id !== $myId); // cannot change own account
-        // barangay_official may only change residents
+        $canEdit = ($id !== $myId);
+
         $isTargetStaff = in_array($user['role'], [ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN], true);
         if ($myRole === ROLE_OFFICIAL && $isTargetStaff) {
             $canEdit = false;
@@ -144,7 +141,7 @@ admin_nav('users');
                     <div class="row g-3">
 
                         <?php if ($user['account_status'] !== 'active'): ?>
-                        <!-- Reactivate -->
+
                         <div class="col-md-4">
                             <div class="border rounded p-3">
                                 <h6 class="text-success"><i class="bi bi-check-circle me-1"></i>Reactivate Account</h6>
@@ -163,7 +160,7 @@ admin_nav('users');
                         <?php endif; ?>
 
                         <?php if ($user['account_status'] !== 'flagged'): ?>
-                        <!-- Flag -->
+
                         <div class="col-md-4">
                             <div class="border rounded p-3">
                                 <h6 class="text-warning"><i class="bi bi-flag me-1"></i>Flag Account</h6>
@@ -183,7 +180,7 @@ admin_nav('users');
                         <?php endif; ?>
 
                         <?php if ($user['account_status'] !== 'suspended'): ?>
-                        <!-- Suspend -->
+
                         <div class="col-md-4">
                             <div class="border rounded p-3">
                                 <h6 class="text-danger"><i class="bi bi-slash-circle me-1"></i>Suspend Account</h6>

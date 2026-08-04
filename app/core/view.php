@@ -32,7 +32,7 @@ function layout_header(string $title = '', string $activeNav = ''): void
 
 function layout_footer(array $extraJs = []): void
 {
-    // Clear old input once per page render (footer marks end of page)
+
     old_input();
     include APP_ROOT . '/app/views/layouts/footer.php';
 }

@@ -10,7 +10,6 @@ require_role(ROLE_ADMIN);
 
 $isUpdate = isset($_POST['id']) && (int)$_POST['id'] > 0;
 
-// Build validation rules — code only required when creating
 $rules = [
     'label'       => 'required|max:200',
     'description' => 'nullable|max:500',
@@ -22,7 +21,6 @@ if (!$isUpdate) {
 
 [$clean, $errors] = validate($_POST, $rules);
 
-// Manually handle checkbox booleans (unchecked checkboxes send nothing)
 $isRequired = isset($_POST['is_required']) && $_POST['is_required'] === '1' ? 1 : 0;
 $isActive   = isset($_POST['is_active'])   && $_POST['is_active']   === '1' ? 1 : 0;
 
@@ -39,7 +37,6 @@ $sortOrder   = isset($clean['sort_order']) && $clean['sort_order'] !== '' ? (int
 if ($isUpdate) {
     $id = (int)$_POST['id'];
 
-    // Verify record exists
     $existing = db_one('SELECT id FROM verification_criteria WHERE id = ?', [$id]);
     if (!$existing) {
         flash('error', 'Criterion not found.');
@@ -58,7 +55,6 @@ if ($isUpdate) {
 } else {
     $code = trim($clean['code'] ?? '');
 
-    // Check unique code
     $existing = db_one('SELECT id FROM verification_criteria WHERE code = ?', [$code]);
     if ($existing) {
         flash_old($_POST);

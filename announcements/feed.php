@@ -1,11 +1,8 @@
 <?php
 require __DIR__ . '/../app/bootstrap.php';
 
-// JSON feed for FullCalendar — public, no login required
-
 header('Content-Type: application/json; charset=utf-8');
 
-// FullCalendar sends ISO strings like "2026-07-01T00:00:00"
 $start = isset($_GET['start']) && $_GET['start'] !== ''
     ? (string)$_GET['start']
     : '2000-01-01T00:00:00';

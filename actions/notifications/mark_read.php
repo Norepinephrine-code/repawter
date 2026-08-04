@@ -13,7 +13,6 @@ if ($id > 0) {
     mark_read($id, user_id());
 }
 
-// Only redirect to internal paths (must start with /)
 $target = $_POST['redirect'] ?? '';
 if ($target !== '' && str_starts_with($target, '/') && !str_starts_with($target, '//')) {
     redirect($target);

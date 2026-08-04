@@ -19,7 +19,6 @@ layout_header('Apply to Foster', 'foster');
             <form method="post" action="<?= url('/actions/foster/foster_submit.php') ?>">
                 <?= csrf_field() ?>
 
-                <!-- Preferred Animal Type -->
                 <div class="mb-3">
                     <label for="preferred_animal_type" class="form-label fw-semibold">
                         Preferred Animal Type <span class="text-danger">*</span>
@@ -35,7 +34,6 @@ layout_header('Apply to Foster', 'foster');
                     </select>
                 </div>
 
-                <!-- Preferred Notes -->
                 <div class="mb-3">
                     <label for="preferred_notes" class="form-label fw-semibold">
                         Preferences / Special Notes
@@ -47,7 +45,6 @@ layout_header('Apply to Foster', 'foster');
                     <div class="form-text">Optional — max 500 characters.</div>
                 </div>
 
-                <!-- Household Capacity -->
                 <div class="mb-3">
                     <label for="household_capacity" class="form-label fw-semibold">
                         Household Capacity (max animals you can foster at once) <span class="text-danger">*</span>
@@ -57,7 +54,6 @@ layout_header('Apply to Foster', 'foster');
                            value="<?= e(old('household_capacity', '1')) ?>">
                 </div>
 
-                <!-- Has Yard -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">Do you have a yard / outdoor space?</label>
                     <div class="d-flex gap-3">
@@ -77,7 +73,6 @@ layout_header('Apply to Foster', 'foster');
                     <div class="form-text">Optional.</div>
                 </div>
 
-                <!-- Household Notes -->
                 <div class="mb-4">
                     <label for="household_notes" class="form-label fw-semibold">
                         About Your Household

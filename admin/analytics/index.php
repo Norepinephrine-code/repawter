@@ -3,7 +3,6 @@ require __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
-// --- Report volume by month (last 12 months) ---
 $monthlyRows = db_all(
     "SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym, COUNT(*) AS cnt
      FROM reports
@@ -12,12 +11,10 @@ $monthlyRows = db_all(
      ORDER BY ym ASC"
 );
 
-// --- Reports by status ---
 $byStatus = db_all(
     "SELECT status, COUNT(*) AS cnt FROM reports GROUP BY status ORDER BY cnt DESC"
 );
 
-// --- Reports by barangay ---
 $byBarangay = db_all(
     "SELECT b.name AS barangay_name, COUNT(r.id) AS cnt
      FROM reports r
@@ -27,12 +24,10 @@ $byBarangay = db_all(
      LIMIT 20"
 );
 
-// --- Reports by urgency ---
 $byUrgency = db_all(
     "SELECT urgency, COUNT(*) AS cnt FROM reports GROUP BY urgency ORDER BY FIELD(urgency,'low','medium','high','critical')"
 );
 
-// --- Avg response times ---
 $responseTimes = db_one(
     "SELECT
         ROUND(AVG(TIMESTAMPDIFF(HOUR, created_at, verified_at)), 1) AS avg_verify_hours,
@@ -42,22 +37,18 @@ $responseTimes = db_one(
      FROM reports"
 );
 
-// --- Case outcomes ---
 $caseOutcomes = db_all(
     "SELECT status, COUNT(*) AS cnt FROM cases GROUP BY status ORDER BY cnt DESC"
 );
 
-// --- Foster application counts by status ---
 $fosterStats = db_all(
     "SELECT status, COUNT(*) AS cnt FROM foster_applications GROUP BY status ORDER BY cnt DESC"
 );
 
-// --- Adoption application counts by status ---
 $adoptionStats = db_all(
     "SELECT status, COUNT(*) AS cnt FROM adoption_applications GROUP BY status ORDER BY cnt DESC"
 );
 
-// Prepare JS-safe data
 $monthLabels    = json_encode(array_column($monthlyRows, 'ym'));
 $monthData      = json_encode(array_map('intval', array_column($monthlyRows, 'cnt')));
 $statusLabels   = json_encode(array_column($byStatus, 'status'));
@@ -72,7 +63,6 @@ admin_nav('analytics');
 <div class="container-fluid py-4">
     <h1 class="paw-page-title mb-4">Analytics Dashboard</h1>
 
-    <!-- Summary Cards -->
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-md-3">
             <div class="card paw-card text-center">
@@ -109,7 +99,7 @@ admin_nav('analytics');
     </div>
 
     <div class="row g-4">
-        <!-- Report Volume by Month -->
+
         <div class="col-lg-8">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">Report Volume — Last 12 Months</div>
@@ -132,7 +122,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Reports by Status -->
         <div class="col-lg-4">
             <div class="card paw-card h-100">
                 <div class="card-header fw-semibold">Reports by Status</div>
@@ -158,7 +147,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Reports by Barangay -->
         <div class="col-lg-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Reports by Barangay (Top 20)</div>
@@ -183,7 +171,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Reports by Urgency -->
         <div class="col-lg-6">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Reports by Urgency</div>
@@ -209,7 +196,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Case Outcomes -->
         <div class="col-lg-4">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Case Outcomes</div>
@@ -234,7 +220,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Foster Application Stats -->
         <div class="col-lg-4">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Foster Applications by Status</div>
@@ -259,7 +244,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Adoption Application Stats -->
         <div class="col-lg-4">
             <div class="card paw-card">
                 <div class="card-header fw-semibold">Adoption Applications by Status</div>
@@ -284,7 +268,6 @@ admin_nav('analytics');
             </div>
         </div>
 
-        <!-- Monthly Summary Link -->
         <div class="col-12">
             <div class="card paw-card">
                 <div class="card-body d-flex align-items-center justify-content-between">

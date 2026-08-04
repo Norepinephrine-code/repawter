@@ -53,7 +53,6 @@ admin_nav('announcements');
     </a>
 </div>
 
-<!-- Filters -->
 <form method="get" class="row g-2 mb-4 align-items-end">
     <div class="col-md-3">
         <label class="form-label small fw-semibold">Status</label>
@@ -93,7 +92,6 @@ admin_nav('announcements');
     </div>
 </form>
 
-<!-- Table -->
 <?php if (empty($rows)): ?>
     <div class="alert alert-info">No announcements found matching the selected filters.</div>
 <?php else: ?>
@@ -144,12 +142,12 @@ admin_nav('announcements');
                 <td class="small"><?= e($ann['author_name']) ?></td>
                 <td class="text-end">
                     <div class="d-flex justify-content-end gap-1">
-                        <!-- Edit -->
+
                         <a href="<?= url('/admin/announcements/edit.php?id=' . $ann['id']) ?>"
                            class="btn btn-sm btn-outline-secondary" title="Edit">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <!-- Publish (only for draft/scheduled) -->
+
                         <?php if (in_array($ann['status'], ['draft', 'scheduled'], true)): ?>
                             <form method="post"
                                   action="<?= url('/actions/announcements/announcement_save.php') ?>"
@@ -162,14 +160,14 @@ admin_nav('announcements');
                                 </button>
                             </form>
                         <?php endif; ?>
-                        <!-- View (if published) -->
+
                         <?php if ($ann['status'] === 'published'): ?>
                             <a href="<?= url('/announcements/view.php?id=' . $ann['id']) ?>"
                                target="_blank" class="btn btn-sm btn-outline-primary" title="View public">
                                 <i class="bi bi-eye"></i>
                             </a>
                         <?php endif; ?>
-                        <!-- Archive (soft delete) -->
+
                         <?php if ($ann['status'] !== 'archived'): ?>
                             <form method="post"
                                   action="<?= url('/actions/announcements/announcement_delete.php') ?>"

@@ -29,7 +29,6 @@ if ($user === false) {
 
 set_current_user($user);
 
-// Redirect to intended URL if set, else role-based default
 $intended = $_SESSION['intended_url'] ?? null;
 unset($_SESSION['intended_url']);
 

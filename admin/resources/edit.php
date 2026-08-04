@@ -15,7 +15,6 @@ $categories = ResourceModel::categories();
 $isNew      = ($res === null);
 $pageTitle  = $isNew ? 'New Resource' : 'Edit Resource';
 
-// Pre-populate from old input or existing row
 $old = peek_old();
 $val = static function (string $key, mixed $fallback = '') use ($old, $res): mixed {
     if (isset($old[$key])) return $old[$key];
@@ -44,7 +43,6 @@ admin_nav('resources');
             <input type="hidden" name="id" value="<?= (int)$res['id'] ?>">
             <?php endif; ?>
 
-            <!-- Category -->
             <div class="mb-3">
                 <label for="category_id" class="form-label fw-semibold">
                     Category <span class="text-danger">*</span>
@@ -60,7 +58,6 @@ admin_nav('resources');
                 </select>
             </div>
 
-            <!-- Title -->
             <div class="mb-3">
                 <label for="title" class="form-label fw-semibold">
                     Title <span class="text-danger">*</span>
@@ -71,7 +68,6 @@ admin_nav('resources');
                        required>
             </div>
 
-            <!-- Slug -->
             <div class="mb-3">
                 <label for="slug" class="form-label fw-semibold">Slug
                     <small class="text-muted">(leave blank to auto-generate from title)</small>
@@ -82,7 +78,6 @@ admin_nav('resources');
                        placeholder="my-resource-slug">
             </div>
 
-            <!-- Summary -->
             <div class="mb-3">
                 <label for="summary" class="form-label fw-semibold">Summary</label>
                 <textarea name="summary" id="summary" class="form-control" rows="2"
@@ -90,7 +85,6 @@ admin_nav('resources');
                           placeholder="Brief description shown in listing cards..."><?= e($val('summary')) ?></textarea>
             </div>
 
-            <!-- Body -->
             <div class="mb-3">
                 <label for="body" class="form-label fw-semibold">
                     Body <span class="text-danger">*</span>
@@ -100,7 +94,6 @@ admin_nav('resources');
                           placeholder="Full article content..."><?= e($val('body')) ?></textarea>
             </div>
 
-            <!-- Cover Image -->
             <div class="mb-3">
                 <label for="cover" class="form-label fw-semibold">Cover Image</label>
                 <?php if (!$isNew && !empty($res['cover_image_path'])): ?>
@@ -117,7 +110,6 @@ admin_nav('resources');
                 <div class="form-text">JPEG, PNG, or WebP. Max 5 MB.</div>
             </div>
 
-            <!-- Published -->
             <div class="mb-4">
                 <div class="form-check form-switch">
                     <input class="form-check-input" type="checkbox" role="switch"
@@ -147,7 +139,7 @@ admin_nav('resources');
                 <ul class="small text-muted ps-3 mb-0">
                     <li>Leave <strong>Slug</strong> blank to auto-generate from the title.</li>
                     <li>Use the <strong>Summary</strong> field for the card excerpt (max 500 chars).</li>
-                    <li>The <strong>Body</strong> is rendered with line-breaks preserved.</li>
+                    <li>The <strong>Body</strong> supports HTML formatting (e.g. <code>&lt;p&gt;</code>, <code>&lt;h2&gt;</code>, <code>&lt;strong&gt;</code>).</li>
                     <li>Check <strong>Published</strong> to make the resource visible publicly.</li>
                 </ul>
             </div>

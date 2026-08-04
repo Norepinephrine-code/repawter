@@ -8,7 +8,6 @@ $id  = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $pet = ($id !== null && $id > 0) ? PetModel::find($id) : null;
 $isNew = ($pet === null);
 
-// Merge with old input if available
 $old = peek_old();
 $v   = function (string $key, string $default = '') use ($pet, $old): string {
     if (isset($old[$key])) {

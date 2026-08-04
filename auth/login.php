@@ -2,7 +2,6 @@
 declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
-// Already logged in — no reason to be here
 if (is_logged_in()) {
     redirect('/');
 }

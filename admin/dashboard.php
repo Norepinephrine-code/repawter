@@ -3,7 +3,6 @@ require __DIR__ . '/../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
-// ── Reports aggregate ──────────────────────────────────────────────────────
 $reportTotal  = (int)(db_one('SELECT COUNT(*) AS c FROM reports')['c'] ?? 0);
 
 $statusCounts = [];
@@ -21,7 +20,6 @@ $urgentOpen = (int)(db_one(
 
 $needsAttention = ($statusCounts['submitted'] ?? 0) + ($statusCounts['under_review'] ?? 0);
 
-// ── Applications ──────────────────────────────────────────────────────────
 $pendingFoster = (int)(db_one(
     "SELECT COUNT(*) AS c FROM foster_applications
      WHERE status IN ('submitted','under_review')"
@@ -32,7 +30,6 @@ $pendingAdoption = (int)(db_one(
      WHERE status IN ('submitted','under_review')"
 )['c'] ?? 0);
 
-// ── Pets & Cases ──────────────────────────────────────────────────────────
 $petsAvailable = (int)(db_one(
     "SELECT COUNT(*) AS c FROM pets WHERE status = 'available'"
 )['c'] ?? 0);
@@ -42,7 +39,6 @@ $openCases = (int)(db_one(
      WHERE status NOT IN ('closed','adopted','released','deceased')"
 )['c'] ?? 0);
 
-// ── Users by role (admin only) ────────────────────────────────────────────
 $usersByRole = [];
 if (can('manage_users')) {
     foreach (db_all('SELECT role, COUNT(*) AS c FROM users GROUP BY role') as $row) {
@@ -50,7 +46,6 @@ if (can('manage_users')) {
     }
 }
 
-// ── Recent reports (latest 5) ─────────────────────────────────────────────
 $recentReports = db_all(
     "SELECT r.id, r.title, r.status, r.urgency, r.created_at,
             u.full_name AS reporter_name
@@ -63,7 +58,6 @@ $recentReports = db_all(
 layout_header('Staff Dashboard', 'admin');
 admin_nav('dashboard');
 
-// Helper: friendly status label
 function status_label(string $status): string
 {
     return ucwords(str_replace('_', ' ', $status));
@@ -79,10 +73,8 @@ function status_label(string $status): string
     </span>
 </div>
 
-<!-- ── Overview cards ──────────────────────────────────────────────────── -->
 <div class="row g-3 mb-4">
 
-    <!-- Reports -->
     <div class="col-sm-6 col-xl-3">
         <div class="paw-card card h-100 shadow-sm">
             <div class="card-body">
@@ -104,7 +96,6 @@ function status_label(string $status): string
         </div>
     </div>
 
-    <!-- Urgent Open Reports -->
     <div class="col-sm-6 col-xl-3">
         <div class="paw-card card h-100 shadow-sm <?= $urgentOpen > 0 ? 'border-danger' : '' ?>">
             <div class="card-body">
@@ -124,7 +115,6 @@ function status_label(string $status): string
         </div>
     </div>
 
-    <!-- Pets Available -->
     <div class="col-sm-6 col-xl-3">
         <div class="paw-card card h-100 shadow-sm">
             <div class="card-body">
@@ -140,7 +130,6 @@ function status_label(string $status): string
         </div>
     </div>
 
-    <!-- Open Cases -->
     <div class="col-sm-6 col-xl-3">
         <div class="paw-card card h-100 shadow-sm">
             <div class="card-body">
@@ -158,10 +147,8 @@ function status_label(string $status): string
 
 </div>
 
-<!-- ── Applications + Report status breakdown ─────────────────────────── -->
 <div class="row g-3 mb-4">
 
-    <!-- Pending Applications -->
     <div class="col-lg-4">
         <div class="paw-card card h-100 shadow-sm">
             <div class="card-header bg-transparent fw-semibold">
@@ -191,7 +178,6 @@ function status_label(string $status): string
         </div>
     </div>
 
-    <!-- Report Status Breakdown -->
     <?php if (can('manage_reports')): ?>
     <div class="col-lg-8">
         <div class="paw-card card h-100 shadow-sm">
@@ -230,7 +216,7 @@ function status_label(string $status): string
 </div>
 
 <?php if (can('manage_users') && !empty($usersByRole)): ?>
-<!-- ── Users by Role (admin) ──────────────────────────────────────────── -->
+
 <div class="row g-3 mb-4">
     <div class="col-lg-6">
         <div class="paw-card card shadow-sm">
@@ -267,7 +253,6 @@ function status_label(string $status): string
 </div>
 <?php endif; ?>
 
-<!-- ── Quick Actions ──────────────────────────────────────────────────── -->
 <div class="mb-4">
     <h5 class="fw-semibold mb-3"><i class="bi bi-lightning-fill me-2 text-warning"></i>Quick Actions</h5>
     <div class="d-flex flex-wrap gap-2">
@@ -319,7 +304,6 @@ function status_label(string $status): string
     </div>
 </div>
 
-<!-- ── Recent Reports ─────────────────────────────────────────────────── -->
 <?php if (can('manage_reports') && !empty($recentReports)): ?>
 <div class="paw-card card shadow-sm">
     <div class="card-header bg-transparent d-flex align-items-center justify-content-between">
@@ -330,7 +314,7 @@ function status_label(string $status): string
         <table class="table table-hover align-middle mb-0">
             <thead class="table-light">
                 <tr>
-                    <th>#</th>
+                    <th>
                     <th>Title / Reporter</th>
                     <th>Status</th>
                     <th>Urgency</th>

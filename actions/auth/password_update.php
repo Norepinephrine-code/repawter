@@ -15,7 +15,6 @@ require_login();
     'new_password_confirm' => 'required',
 ]);
 
-// Confirm match
 if (empty($errors['new_password']) && empty($errors['new_password_confirm'])) {
     if ($_POST['new_password'] !== $_POST['new_password_confirm']) {
         $errors['new_password_confirm'] = 'New passwords do not match.';
@@ -27,7 +26,6 @@ if (!empty($errors)) {
     redirect('/auth/profile.php');
 }
 
-// Verify current password against stored hash
 $uid  = user_id();
 $user = db_one('SELECT password_hash FROM users WHERE id = ? LIMIT 1', [$uid]);
 

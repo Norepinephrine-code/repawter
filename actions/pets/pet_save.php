@@ -33,7 +33,6 @@ if (!empty($errors)) {
     redirect($isEdit ? '/admin/pets/edit.php?id=' . $petId : '/admin/pets/edit.php');
 }
 
-// Handle photo upload
 $photoPath    = null;
 $existingPath = null;
 
@@ -57,16 +56,15 @@ if ($hasUpload) {
     }
     $photoPath = $upload['path'];
 } elseif (!$isEdit) {
-    // New pet requires a photo
+
     flash_old($_POST);
     flash('error', 'A photo is required for a new pet.');
     redirect('/admin/pets/edit.php');
 } else {
-    // Keep existing photo on edit
+
     $photoPath = $existingPath;
 }
 
-// Normalize nullable int fields
 $ageMonths    = (isset($clean['approx_age_months']) && $clean['approx_age_months'] !== '')
     ? (int)$clean['approx_age_months']
     : null;
@@ -95,7 +93,7 @@ $data = [
 
 if ($isEdit) {
     PetModel::update($petId, $data);
-    // Delete old photo if replaced
+
     if ($hasUpload && $existingPath !== null && $existingPath !== $photoPath) {
         delete_upload($existingPath);
     }

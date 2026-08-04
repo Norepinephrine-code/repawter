@@ -18,5 +18,10 @@ Desktop.ini
 .vscode/
 .idea/
 
-# ── Optional local override (committed default config is XAMPP-friendly) ──
-# app/config/config.local.php
+# ── Local config override (never commit real production credentials) ──
+app/config/config.local.php
+
+# ── Storage / runtime logs (created at deploy time) ──
+/storage/logs/*
+!/storage/logs/.gitkeep
+!/storage/.gitkeep

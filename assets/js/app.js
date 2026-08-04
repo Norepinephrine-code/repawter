@@ -1,13 +1,6 @@
-/**
- * RePawter — app.js
- * Vanilla JS utilities: confirm dialogs, image preview, auto-dismiss alerts.
- */
-
 (function () {
   'use strict';
 
-  // ── Confirm dialogs ─────────────────────────────────────────────────────
-  // Elements with [data-confirm] will show a confirm dialog on click/submit.
   document.addEventListener('click', function (e) {
     var el = e.target.closest('[data-confirm]');
     if (!el) return;
@@ -18,7 +11,6 @@
     }
   });
 
-  // Also intercept form submit for forms with [data-confirm]
   document.addEventListener('submit', function (e) {
     var form = e.target;
     if (!form.hasAttribute('data-confirm')) return;
@@ -28,8 +20,6 @@
     }
   });
 
-  // ── Image preview for file inputs ──────────────────────────────────────
-  // Usage: <input type="file" data-preview="#previewImgId">
   document.addEventListener('change', function (e) {
     var input = e.target;
     if (input.tagName !== 'INPUT' || input.type !== 'file') return;
@@ -56,8 +46,6 @@
     reader.readAsDataURL(file);
   });
 
-  // ── Auto-dismiss alerts ─────────────────────────────────────────────────
-  // Bootstrap alerts with class .alert-dismissible auto-dismiss after 5 s.
   function autoDismissAlerts() {
     var alerts = document.querySelectorAll('.alert.alert-dismissible');
     alerts.forEach(function (alert) {

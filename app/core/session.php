@@ -6,11 +6,15 @@ function session_boot(): void
     if (session_status() === PHP_SESSION_ACTIVE) {
         return;
     }
+
+    ini_set('session.use_strict_mode', '1');
+
     session_set_cookie_params([
         'lifetime' => 0,
-        'path'     => '/',
+        'path'     => BASE_URL,
         'httponly' => true,
         'samesite' => 'Lax',
+        'secure'   => defined('SESSION_SECURE') ? SESSION_SECURE : false,
     ]);
     session_start();
 }

@@ -35,7 +35,7 @@ class PetModel
 
     public static function update(int $id, array $data): void
     {
-        // Build SET clause dynamically for only provided fields
+
         $allowed = [
             'name', 'animal_type', 'species_other', 'breed', 'sex',
             'approx_age_months', 'size', 'color', 'is_vaccinated',
@@ -49,7 +49,7 @@ class PetModel
                 $params[] = $data[$col];
             }
         }
-        // Handle published_at: set to NOW() when transitioning to available if not already set
+
         if (isset($data['status']) && $data['status'] === 'available') {
             $sets[]   = 'published_at = IFNULL(published_at, NOW())';
         }
@@ -68,9 +68,6 @@ class PetModel
         return db_one('SELECT * FROM pets WHERE id = ? LIMIT 1', [$id]);
     }
 
-    /**
-     * Public gallery listing — only status='available', optional animal_type filter.
-     */
     public static function list_public(array $filters, int $page): array
     {
         $where  = ["p.status = 'available'"];
@@ -87,9 +84,6 @@ class PetModel
         return paginate($sql, $params, $page, 12);
     }
 
-    /**
-     * Admin listing — all statuses, optional status/animal_type filters.
-     */
     public static function list_admin(array $filters, int $page): array
     {
         $where  = ['1=1'];
@@ -110,9 +104,6 @@ class PetModel
         return paginate($sql, $params, $page, 20);
     }
 
-    /**
-     * Set pet status; sets published_at=NOW() when moving to 'available' if not already set.
-     */
     public static function set_status(int $id, string $status): void
     {
         if ($status === 'available') {

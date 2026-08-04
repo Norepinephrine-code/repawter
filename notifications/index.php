@@ -7,7 +7,6 @@ $page   = max(1, (int)($_GET['page'] ?? 1));
 $result = NotificationModel::list_for(user_id(), $page);
 $rows   = $result['rows'];
 
-// Icon map by notification type
 $typeIcons = [
     'system'     => 'bi-gear-fill text-secondary',
     'report'     => 'bi-flag-fill text-warning',

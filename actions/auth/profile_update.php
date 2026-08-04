@@ -29,7 +29,6 @@ UserModel::update_profile($uid, [
     'barangay_id'    => $clean['barangay_id'],
 ]);
 
-// Refresh session with updated data
 $updated = UserModel::find($uid);
 if ($updated) {
     set_current_user($updated);

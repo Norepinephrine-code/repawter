@@ -3,14 +3,7 @@ declare(strict_types=1);
 
 class FosterModel
 {
-    // -------------------------------------------------------------------------
-    // CREATE
-    // -------------------------------------------------------------------------
 
-    /**
-     * Insert a new foster application row.
-     * Returns the new record id.
-     */
     public static function create(array $data): int
     {
         db_exec(
@@ -33,11 +26,6 @@ class FosterModel
         return (int) db_insert_id();
     }
 
-    // -------------------------------------------------------------------------
-    // READ
-    // -------------------------------------------------------------------------
-
-    /** Return a single foster_applications row or null (no JOINs). */
     public static function find(int $id): ?array
     {
         return db_one(
@@ -46,11 +34,6 @@ class FosterModel
         );
     }
 
-    /**
-     * Return a foster application with applicant details joined.
-     * Joined columns: applicant_full_name, applicant_email,
-     *                 applicant_contact_number, applicant_barangay
-     */
     public static function find_with_applicant(int $id): ?array
     {
         return db_one(
@@ -67,10 +50,6 @@ class FosterModel
         );
     }
 
-    /**
-     * Paginated list of applications for a single user, newest first.
-     * Returns paginate() result: [rows, total, page, pages, perPage].
-     */
     public static function list_by_user(int $userId, int $page): array
     {
         return paginate(
@@ -80,11 +59,6 @@ class FosterModel
         );
     }
 
-    /**
-     * Paginated, optionally status-filtered list for staff, with applicant name joined.
-     * $filters may contain 'status' key.
-     * Returns paginate() result.
-     */
     public static function list_filtered(array $filters, int $page): array
     {
         $where  = [];
@@ -106,14 +80,6 @@ class FosterModel
         return paginate($sql, $params, $page);
     }
 
-    // -------------------------------------------------------------------------
-    // UPDATE
-    // -------------------------------------------------------------------------
-
-    /**
-     * Record an approve / reject decision.
-     * Sets status, reviewed_by, reviewed_at=NOW(), decision_notes.
-     */
     public static function decide(int $id, string $status, int $reviewerId, ?string $notes): void
     {
         db_exec(
@@ -128,14 +94,6 @@ class FosterModel
         );
     }
 
-    // -------------------------------------------------------------------------
-    // HISTORY
-    // -------------------------------------------------------------------------
-
-    /**
-     * All foster applications submitted by a given user, newest first.
-     * Used on the staff view page to show the applicant's history.
-     */
     public static function applicant_history(int $userId): array
     {
         return db_all(

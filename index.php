@@ -9,7 +9,6 @@ if (is_logged_in()) {
         redirect('/admin/dashboard.php');
     }
 
-    // Resident landing page
     layout_header('Home', 'home');
 ?>
 <section class="paw-hero mb-5">
@@ -76,7 +75,6 @@ if (is_logged_in()) {
     exit;
 }
 
-// Guest landing page
 layout_header('Welcome', 'home');
 ?>
 <section class="paw-hero mb-5">

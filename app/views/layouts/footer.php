@@ -32,12 +32,11 @@
     </div>
 </footer>
 
-<!-- Bootstrap JS Bundle (includes Popper) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc4s9bIOgUxi8T/jzmw/b3JbBid/SKdJTJSlJMl8e3o5" crossorigin="anonymous"></script>
-<!-- FullCalendar JS -->
+
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
-<!-- App JS -->
+
 <script src="<?= asset('/js/app.js') ?>"></script>
 <?php foreach ($extraJs as $js): ?>
 <?php if (str_starts_with($js, '<script')): ?>

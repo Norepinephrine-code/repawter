@@ -10,13 +10,12 @@ $resources  = $result['rows'];
 
 layout_header('Educational Resources', 'resources');
 ?>
-<!-- Hero -->
+
 <div class="paw-hero text-center mb-5" style="padding: 3rem 1rem;">
     <h1 class="display-5 fw-bold mb-2"><i class="bi bi-journal-richtext me-2"></i>Educational Resources</h1>
     <p class="lead mb-0">Learn about responsible pet ownership, animal welfare, and community care.</p>
 </div>
 
-<!-- Category Filter -->
 <?php if (!empty($categories)): ?>
 <div class="mb-4 d-flex flex-wrap gap-2 justify-content-center">
     <a href="<?= url('/resources/') ?>"
@@ -32,7 +31,6 @@ layout_header('Educational Resources', 'resources');
 </div>
 <?php endif; ?>
 
-<!-- Resource Grid -->
 <?php if (empty($resources)): ?>
 <div class="text-center py-5 text-muted">
     <i class="bi bi-journal-x fs-1 d-block mb-3"></i>

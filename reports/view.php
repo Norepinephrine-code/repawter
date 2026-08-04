@@ -13,7 +13,6 @@ if ($report === null) {
     redirect('/reports/my_reports.php');
 }
 
-// Only the reporter may access this resident view
 if ((int) $report['reporter_id'] !== (int) user_id()) {
     flash('error', 'You do not have permission to view that report.');
     redirect('/reports/my_reports.php');
@@ -39,7 +38,7 @@ layout_header('Report #' . e($id), 'my_reports');
 ?>
 
 <div class="container py-4">
-    <!-- Back link -->
+
     <a href="<?= url('/reports/my_reports.php') ?>" class="btn btn-sm btn-outline-secondary mb-3">
         <i class="bi bi-arrow-left"></i> Back to My Reports
     </a>
@@ -52,7 +51,7 @@ layout_header('Report #' . e($id), 'my_reports');
     <?php endif; ?>
 
     <div class="row g-4">
-        <!-- Photo & Status -->
+
         <div class="col-md-4">
             <?php if (!empty($report['photo_path'])): ?>
             <img src="<?= e(upload_url($report['photo_path'])) ?>"
@@ -74,7 +73,6 @@ layout_header('Report #' . e($id), 'my_reports');
             </div>
         </div>
 
-        <!-- Details -->
         <div class="col-md-8">
             <div class="paw-card p-4 mb-4">
                 <h2 class="h4 text-paw-dark mb-3">
@@ -116,13 +114,11 @@ layout_header('Report #' . e($id), 'my_reports');
                 </dl>
             </div>
 
-            <!-- Description -->
             <div class="paw-card p-4 mb-4">
                 <h3 class="h6 fw-semibold text-paw-dark mb-2">Description</h3>
                 <p class="mb-0" style="white-space:pre-wrap;"><?= e($report['description']) ?></p>
             </div>
 
-            <!-- Status Timeline -->
             <?php if (!empty($history)): ?>
             <div class="paw-card p-4">
                 <h3 class="h6 fw-semibold text-paw-dark mb-3">

@@ -93,7 +93,7 @@ class AdoptionModel
 
     public static function complete(int $id, int $by): void
     {
-        // Get the pet_id first
+
         $app = db_one('SELECT pet_id FROM adoption_applications WHERE id = ? LIMIT 1', [$id]);
         if ($app === null) {
             return;
@@ -104,7 +104,7 @@ class AdoptionModel
              WHERE id = ?',
             [$id]
         );
-        // Set the pet's status to 'adopted'
+
         PetModel::set_status((int)$app['pet_id'], 'adopted');
     }
 
@@ -115,7 +115,6 @@ class AdoptionModel
             throw new \RuntimeException("Application $appId not found.");
         }
 
-        // Generate agreement number: ADOPT-YYYY-000123
         $agreementNumber = 'ADOPT-' . date('Y') . '-' . str_pad((string)$appId, 6, '0', STR_PAD_LEFT);
 
         db_exec(

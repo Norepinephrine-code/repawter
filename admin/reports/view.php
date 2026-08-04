@@ -34,13 +34,13 @@ admin_nav('reports');
 <div class="container-fluid py-4">
     <div class="d-flex align-items-center mb-4 gap-2">
         <a href="<?= url('/admin/reports/index.php') ?>" class="btn btn-outline-secondary btn-sm">← Back</a>
-        <h1 class="paw-page-title mb-0">Report #<?= e($id) ?></h1>
+        <h1 class="paw-page-title mb-0">Report
         <?php partial('report_status_badge', ['status' => $report['status']]) ?>
         <span class="badge urgency--<?= e($report['urgency']) ?>"><?= e(ucfirst($report['urgency'])) ?></span>
     </div>
 
     <div class="row g-4">
-        <!-- Left column: photo + details -->
+
         <div class="col-lg-5">
             <div class="paw-card p-3 mb-3">
                 <?php if (!empty($report['photo_path'])): ?>
@@ -97,7 +97,6 @@ admin_nav('reports');
                 </div>
             </div>
 
-            <!-- Status timeline -->
             <div class="paw-card p-3">
                 <h6 class="fw-semibold mb-3">Status Timeline</h6>
                 <?php if (empty($history)): ?>
@@ -129,10 +128,8 @@ admin_nav('reports');
             </div>
         </div>
 
-        <!-- Right column: action panels -->
         <div class="col-lg-7">
 
-            <!-- Verification checklist -->
             <div class="paw-card p-3 mb-3">
                 <h6 class="fw-semibold mb-3">Verification Checklist
                     <?php if ($allMet): ?>
@@ -190,7 +187,6 @@ admin_nav('reports');
                 </form>
             </div>
 
-            <!-- Assign -->
             <div class="paw-card p-3 mb-3">
                 <h6 class="fw-semibold mb-3">Assign Report</h6>
                 <form method="post" action="<?= url('/actions/reports/assign.php') ?>">
@@ -216,7 +212,6 @@ admin_nav('reports');
                 </form>
             </div>
 
-            <!-- Update status -->
             <div class="paw-card p-3 mb-3">
                 <h6 class="fw-semibold mb-3">Update Status</h6>
                 <form method="post" action="<?= url('/actions/reports/status_update.php') ?>">
@@ -244,14 +239,13 @@ admin_nav('reports');
                 document.getElementById('statusSelect').addEventListener('change', function() {
                     document.getElementById('rejectionRow').style.display = this.value === 'rejected' ? '' : 'none';
                 });
-                // Show on load if already rejected
+
                 if (document.getElementById('statusSelect').value === 'rejected') {
                     document.getElementById('rejectionRow').style.display = '';
                 }
                 </script>
             </div>
 
-            <!-- Archive -->
             <div class="paw-card p-3 mb-3">
                 <h6 class="fw-semibold mb-3">Archive Report</h6>
                 <form method="post" action="<?= url('/actions/reports/archive.php') ?>">
@@ -264,12 +258,11 @@ admin_nav('reports');
                 </form>
             </div>
 
-            <!-- Case -->
             <div class="paw-card p-3">
                 <h6 class="fw-semibold mb-3">Linked Case</h6>
                 <?php if ($case): ?>
                 <dl class="row small mb-2">
-                    <dt class="col-sm-4 text-muted">Case #</dt>
+                    <dt class="col-sm-4 text-muted">Case
                     <dd class="col-sm-8"><?= e($case['case_number']) ?></dd>
                     <dt class="col-sm-4 text-muted">Status</dt>
                     <dd class="col-sm-8"><span class="badge bg-secondary"><?= e(ucfirst(str_replace('_',' ',$case['status']))) ?></span></dd>
@@ -293,7 +286,7 @@ admin_nav('reports');
 </div>
 
 <script>
-// data-confirm handler
+
 document.addEventListener('submit', function(e) {
     var btn = e.submitter;
     if (btn && btn.dataset.confirm) {

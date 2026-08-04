@@ -67,6 +67,8 @@ No Composer / npm / build step — clone, import the database, and run.
 
 DB connection settings live in [`app/config/config.php`](app/config/config.php) — change `DB_USER`/`DB_PASS` there if your MySQL differs.
 
+> **Going to production?** See the full **[Production Deployment Guide](docs/DEPLOYMENT.md)** — covers LAMP setup, least-privilege DB users, TLS/HTTPS, security headers, environment-variable configuration, and a post-deployment checklist.
+
 ---
 
 ## 👤 Demo accounts
@@ -101,15 +103,20 @@ repawter/
 │  ├─ models/                         # UserModel, ReportModel, CaseModel, PetModel, ...
 │  └─ views/                          # layouts + partials
 ├─ assets/  uploads/  lib/fpdf/
+├─ storage/logs/                      # runtime error logs (production)
 ├─ db/schema.sql  db/seed.sql
-└─ docs/CONTRACTS.md                  # internal developer contract
+└─ docs/CONTRACTS.md  docs/DEPLOYMENT.md  # developer contract + deploy guide
 ```
 
 ## 🔐 Security notes
 - All queries use **PDO prepared statements**; all output is escaped with `e()` (htmlspecialchars).
 - **CSRF tokens** on every POST; **RBAC** guards every admin page; passwords are hashed with `password_hash()`.
 - Uploads are validated by MIME + `getimagesize()`, stored with random names, and cannot execute as scripts.
-- Private folders (`app/`, `db/`, `lib/`, `docs/`) are blocked from web access via `.htaccess`.
+- Private folders (`app/`, `db/`, `lib/`, `docs/`, `storage/`) are blocked from web access via `.htaccess`.
+- **Production security headers** — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`, and `Strict-Transport-Security` (HSTS) are set in both `.htaccess` and `app/bootstrap.php`.
+- **Session hardening** — `HttpOnly`, `SameSite=Lax`, `Secure` (auto-enabled when `APP_ENV=prod`), and `use_strict_mode` to prevent session ID fixation.
+- **Environment-based config** — sensitive values (DB credentials, `APP_ENV`) can be set via environment variables or a git-ignored `config.local.php` so secrets never enter version control.
+- **Error handling** — in production (`APP_ENV=prod`), `display_errors` is off and errors are logged to `storage/logs/php-error.log`.
 
 ## ⚠️ Scope / limitations
 Google Maps pins, SMS, payment gateways, and real email delivery are out of scope (future enhancements) per the project brief. Notifications are in-app; "sent" emails are logged to an `email_outbox` table.

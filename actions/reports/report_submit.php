@@ -10,7 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 csrf_verify();
 require_role(ROLE_RESIDENT);
 
-// Validate POST fields
 [$clean, $errors] = validate($_POST, [
     'animal_type'      => 'required|in:dog,cat,other',
     'species_other'    => 'nullable',
@@ -28,7 +27,6 @@ if (!empty($errors)) {
     redirect('/reports/submit.php');
 }
 
-// Handle photo upload (required)
 $upload = handle_upload($_FILES['photo'] ?? [], 'reports');
 if (!$upload['ok']) {
     flash_old($_POST);
@@ -36,7 +34,6 @@ if (!$upload['ok']) {
     redirect('/reports/submit.php');
 }
 
-// Build data array for model
 $reportData = [
     'reporter_id'        => user_id(),
     'barangay_id'        => (int) $clean['barangay_id'],
@@ -53,7 +50,6 @@ $reportData = [
 
 $reportId = ReportModel::create($reportData);
 
-// Notify staff roles about new report
 $urgency = $clean['urgency'];
 $message = 'A new ' . $urgency . ' report was submitted.';
 notify_role(ROLE_OFFICIAL, 'report', 'New animal report', $message, '/admin/reports/');

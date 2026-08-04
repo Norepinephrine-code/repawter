@@ -30,7 +30,6 @@ if (!$report) {
     redirect('/admin/reports/index.php');
 }
 
-// Handle rejection_reason
 if ($newStatus === 'rejected') {
     $reason = trim($_POST['rejection_reason'] ?? '');
     if ($reason !== '') {
