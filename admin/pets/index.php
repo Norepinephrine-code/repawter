@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_WELFARE, ROLE_ADMIN);
 
@@ -78,9 +78,7 @@ admin_nav('pets');
                 <?php else: ?>
                 <?php foreach ($pets as $pet): ?>
                 <?php
-                $thumb = !empty($pet['photo_path'])
-                    ? upload_url($pet['photo_path'])
-                    : asset('/img/placeholder-pet.png');
+                $thumb = photo_url($pet['photo_path'] ?? null);
                 $typeLabel = match ($pet['animal_type']) {
                     'dog'   => 'Dog',
                     'cat'   => 'Cat',
@@ -116,7 +114,7 @@ admin_nav('pets');
                         <?php if ($pet['status'] !== 'archived'): ?>
                         <form method="post" action="<?= url('/actions/pets/pet_delete.php') ?>"
                               class="d-inline"
-                              onsubmit="return confirm('Archive this pet?')">
+                              data-confirm="Archive this pet?">
                             <?= csrf_field() ?>
                             <input type="hidden" name="id" value="<?= (int)$pet['id'] ?>">
                             <button type="submit" class="btn btn-sm btn-outline-danger">

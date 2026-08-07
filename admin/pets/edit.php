@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_WELFARE, ROLE_ADMIN);
 
@@ -147,7 +147,7 @@ admin_nav('pets');
                         </label>
                         <?php if (!$isNew && !empty($pet['photo_path'])): ?>
                         <div class="mb-2">
-                            <img src="<?= e(upload_url($pet['photo_path'])) ?>"
+                            <img src="<?= e(photo_url($pet['photo_path'] ?? null)) ?>"
                                  alt="Current photo" style="height:100px; object-fit:cover;" class="rounded border">
                         </div>
                         <?php endif; ?>

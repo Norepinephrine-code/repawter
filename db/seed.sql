@@ -9,7 +9,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 SET NAMES utf8mb4;
 
 -- ── barangays (ids 1-5) ──────────────────────────────────────
-INSERT INTO `barangays` (`id`, `name`, `municipality`, `province`, `is_active`) VALUES
+INSERT IGNORE INTO `barangays` (`id`, `name`, `municipality`, `province`, `is_active`) VALUES
 (1, 'San Isidro',    'Sampleton', 'Metro Demo', 1),
 (2, 'Poblacion',     'Sampleton', 'Metro Demo', 1),
 (3, 'Santa Cruz',    'Sampleton', 'Metro Demo', 1),
@@ -32,14 +32,14 @@ VALUES
 (8, 'community_resident', 'flagged', 'pedro.reyes@example.test',     '$2y$10$JzqSU3HbWLX5qAleWe3jZOwPL/QS5kdEiPMEhbrMX3oUZ/KoJ9eiO', 'Pedro Reyes',      NULL,            3,    NULL, 'Multiple duplicate reports', NULL, '2026-02-05 14:00:00');
 
 -- ── resource_categories ──────────────────────────────────────
-INSERT INTO `resource_categories` (`id`, `name`, `slug`, `is_active`) VALUES
+INSERT IGNORE INTO `resource_categories` (`id`, `name`, `slug`, `is_active`) VALUES
 (1, 'Responsible Pet Ownership', 'responsible-pet-ownership', 1),
 (2, 'Rabies Prevention',          'rabies-prevention',         1),
 (3, 'Fostering & Adoption',       'fostering-adoption',        1),
 (4, 'Community TNR',              'community-tnr',             1);
 
 -- ── verification_criteria ────────────────────────────────────
-INSERT INTO `verification_criteria`
+INSERT IGNORE INTO `verification_criteria`
     (`id`, `code`, `label`, `description`, `is_required`, `is_active`, `sort_order`, `created_by`)
 VALUES
 (1, 'has_photo',       'Report includes a clear photo of the animal',            'At least one clear photo showing the animal is attached.',                       1, 1, 1, 1),

@@ -1,4 +1,13 @@
 <?php
+// Maintenance tool, not part of the application.
+//
+// It rewrites every source file in the project, so it must never be reachable
+// over HTTP. The root .htaccess also blocks it; this guard is the backstop for
+// a server that does not read .htaccess.
+if (PHP_SAPI !== 'cli') {
+    http_response_code(404);
+    exit("Not found\n");
+}
 /**
  * One-off script: strip all comments from PHP/JS/CSS files.
  * Delete after running.

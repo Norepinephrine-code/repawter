@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -29,7 +29,7 @@ $petId  = $isEdit ? (int)$_POST['id'] : 0;
 
 if (!empty($errors)) {
     flash_old($_POST);
-    flash('error', 'Please fix the errors below.');
+    flash_errors($errors);
     redirect($isEdit ? '/admin/pets/edit.php?id=' . $petId : '/admin/pets/edit.php');
 }
 

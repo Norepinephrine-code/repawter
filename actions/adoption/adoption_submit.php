@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -18,7 +18,7 @@ require_login();
 
 if (!empty($errors)) {
     flash_old($_POST);
-    flash('error', 'Please fix the errors below.');
+    flash_errors($errors);
     $petId = (int)($_POST['pet_id'] ?? 0);
     redirect('/adoption/apply.php?pet_id=' . $petId);
 }
@@ -29,6 +29,14 @@ $pet   = PetModel::find($petId);
 if ($pet === null || $pet['status'] !== 'available') {
     flash('error', 'This pet is not available for adoption.');
     redirect('/adoption/gallery.php');
+}
+
+$existing = AdoptionModel::find_for_pet_and_applicant($petId, (int)user_id());
+
+if ($existing !== null) {
+    flash('info', 'You have already applied to adopt ' . $pet['name']
+        . '. Your application is currently "' . str_replace('_', ' ', $existing['status']) . '".');
+    redirect('/adoption/pet.php?id=' . $petId);
 }
 
 AdoptionModel::create([

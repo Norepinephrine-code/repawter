@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_WELFARE, ROLE_OFFICIAL, ROLE_ADMIN);
 
@@ -174,7 +174,7 @@ admin_nav('foster');
                                               placeholder="Any notes for the applicant…"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-success w-100"
-                                        onclick="return confirm('Approve this foster application?')">
+                                        data-confirm="Approve this foster application?">
                                     <i class="bi bi-check-circle me-1"></i> Approve
                                 </button>
                             </form>
@@ -192,7 +192,7 @@ admin_nav('foster');
                                               placeholder="Provide a reason…"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-danger w-100"
-                                        onclick="return confirm('Reject this foster application?')">
+                                        data-confirm="Reject this foster application?">
                                     <i class="bi bi-x-circle me-1"></i> Reject
                                 </button>
                             </form>

@@ -114,3 +114,22 @@ function old(string $key, string $default = ''): string
     $old = peek_old();
     return isset($old[$key]) ? (string)$old[$key] : $default;
 }
+
+function field_label(string $field): string
+{
+    return ucfirst(str_replace('_', ' ', $field));
+}
+
+function flash_errors(array $errors): void
+{
+    foreach ($errors as $field => $message) {
+        $label = field_label((string)$field);
+
+        
+        $message = stripos($message, $label) === 0
+            ? $message
+            : $label . ': ' . $message;
+
+        flash('error', $message);
+    }
+}

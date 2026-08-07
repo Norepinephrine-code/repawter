@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img"
+     aria-label="No photo available">
+  <rect width="400" height="300" fill="#F5F1ED"/>
+  <g fill="#D5CAC1">
+    <ellipse cx="169" cy="128" rx="15" ry="19"/>
+    <ellipse cx="231" cy="128" rx="15" ry="19"/>
+    <ellipse cx="138" cy="158" rx="13.5" ry="17"/>
+    <ellipse cx="262" cy="158" rx="13.5" ry="17"/>
+    <path d="M200 156c16.5 0 30 11.9 34.6 25.6 4.1 12.2-4.1 24-17 24-6.2 0-11.4-2.3-17.6-2.3s-11.4 2.3-17.6 2.3c-12.9 0-21.1-11.8-17-24C170 167.9 183.5 156 200 156Z"/>
+  </g>
+  <text x="200" y="242" text-anchor="middle"
+        font-family="system-ui, -apple-system, 'Segoe UI', sans-serif"
+        font-size="15" font-weight="600" fill="#9C8F87">No photo available</text>
+</svg>

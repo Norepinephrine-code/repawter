@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 require_login();
 
@@ -54,7 +54,7 @@ layout_header('Report #' . e($id), 'my_reports');
 
         <div class="col-md-4">
             <?php if (!empty($report['photo_path'])): ?>
-            <img src="<?= e(upload_url($report['photo_path'])) ?>"
+            <img src="<?= e(photo_url($report['photo_path'] ?? null)) ?>"
                  alt="Report photo"
                  class="report-photo img-fluid rounded mb-3 w-100"
                  style="object-fit:cover;max-height:340px;">

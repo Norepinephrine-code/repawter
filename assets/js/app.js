@@ -1,72 +1,200 @@
-(function () {
+
+(function (global, factory) {
   'use strict';
 
-  document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-confirm]');
-    if (!el) return;
-    var message = el.getAttribute('data-confirm') || 'Are you sure?';
-    if (!window.confirm(message)) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
+  var api = factory();
+
+  if (typeof module === 'object' && module !== null && typeof module.exports === 'object') {
+    module.exports = api;
+  } else {
+    global.PawApp = api;
+    api.autoStart(global);
+  }
+})(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+  'use strict';
+
+  var DEFAULT_CONFIRM_MESSAGE = 'Are you sure?';
+  var ALERT_DISMISS_DELAY_MS = 6000;
+  var FADE_MS = 400;
+
+  
+  function findConfirmable(target) {
+    if (!target || typeof target.closest !== 'function') {
+      return null;
     }
-  });
+    return target.closest('[data-confirm]');
+  }
 
-  document.addEventListener('submit', function (e) {
-    var form = e.target;
-    if (!form.hasAttribute('data-confirm')) return;
-    var message = form.getAttribute('data-confirm') || 'Are you sure?';
-    if (!window.confirm(message)) {
-      e.preventDefault();
+  function confirmMessageFor(el) {
+    var message = el.getAttribute('data-confirm');
+    return message && message.trim() !== '' ? message : DEFAULT_CONFIRM_MESSAGE;
+  }
+
+  
+  function handleConfirmClick(event, confirmFn) {
+    var el = findConfirmable(event.target);
+    if (!el) {
+      return true;
     }
-  });
 
-  document.addEventListener('change', function (e) {
-    var input = e.target;
-    if (input.tagName !== 'INPUT' || input.type !== 'file') return;
-    var previewSelector = input.getAttribute('data-preview');
-    if (!previewSelector) return;
+    if (confirmFn(confirmMessageFor(el))) {
+      return true;
+    }
 
-    var preview = document.querySelector(previewSelector);
-    if (!preview) return;
+    event.preventDefault();
+    if (typeof event.stopImmediatePropagation === 'function') {
+      event.stopImmediatePropagation();
+    }
+    return false;
+  }
+
+  
+  function handleConfirmSubmit(event, confirmFn) {
+    var form = event.target;
+    if (!form || typeof form.hasAttribute !== 'function' || !form.hasAttribute('data-confirm')) {
+      return true;
+    }
+
+    if (confirmFn(confirmMessageFor(form))) {
+      return true;
+    }
+
+    event.preventDefault();
+    return false;
+  }
+
+  
+  function handleFilePreview(event, doc, FileReaderCtor) {
+    var input = event.target;
+
+    if (!input || input.tagName !== 'INPUT' || input.type !== 'file') {
+      return false;
+    }
+
+    var selector = input.getAttribute('data-preview');
+    if (!selector) {
+      return false;
+    }
+
+    var preview = doc.querySelector(selector);
+    if (!preview) {
+      return false;
+    }
 
     var file = input.files && input.files[0];
-    if (!file) return;
-
-    if (!file.type.startsWith('image/')) {
-      preview.src = '';
-      preview.style.display = 'none';
-      return;
+    if (!file) {
+      hidePreview(preview);
+      return false;
     }
 
-    var reader = new FileReader();
+    if (typeof file.type !== 'string' || file.type.indexOf('image/') !== 0) {
+      hidePreview(preview);
+      return false;
+    }
+
+    var reader = new FileReaderCtor();
     reader.onload = function (evt) {
-      preview.src = evt.target.result;
+      preview.src = evt && evt.target ? evt.target.result : '';
       preview.style.display = 'block';
+      preview.removeAttribute('hidden');
     };
     reader.readAsDataURL(file);
-  });
 
-  function autoDismissAlerts() {
-    var alerts = document.querySelectorAll('.alert.alert-dismissible');
-    alerts.forEach(function (alert) {
-      setTimeout(function () {
-        var bsAlert = bootstrap && bootstrap.Alert ? bootstrap.Alert.getOrCreateInstance(alert) : null;
-        if (bsAlert) {
-          bsAlert.close();
-        } else {
-          alert.style.transition = 'opacity 0.5s';
-          alert.style.opacity = '0';
-          setTimeout(function () {
-            alert.remove();
-          }, 500);
+    return true;
+  }
+
+  function hidePreview(preview) {
+    preview.src = '';
+    preview.style.display = 'none';
+    preview.setAttribute('hidden', 'hidden');
+  }
+
+  
+  function dismissAlert(alert, bootstrapRef, win) {
+    if (bootstrapRef && bootstrapRef.Alert && typeof bootstrapRef.Alert.getOrCreateInstance === 'function') {
+      bootstrapRef.Alert.getOrCreateInstance(alert).close();
+      return 'bootstrap';
+    }
+
+    alert.style.transition = 'opacity ' + FADE_MS + 'ms';
+    alert.style.opacity = '0';
+    win.setTimeout(function () {
+      if (alert.parentNode) {
+        alert.remove();
+      }
+    }, FADE_MS);
+
+    return 'manual';
+  }
+
+  
+  function autoDismissAlerts(doc, win, bootstrapRef, delayMs) {
+    var alerts = doc.querySelectorAll('.alert.alert-dismissible');
+    var scheduled = 0;
+
+    Array.prototype.forEach.call(alerts, function (alert) {
+      win.setTimeout(function () {
+        if (alert.matches(':hover') || alert.contains(doc.activeElement)) {
+          return;
         }
-      }, 5000);
+        dismissAlert(alert, bootstrapRef, win);
+      }, typeof delayMs === 'number' ? delayMs : ALERT_DISMISS_DELAY_MS);
+      scheduled += 1;
     });
+
+    return scheduled;
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', autoDismissAlerts);
-  } else {
-    autoDismissAlerts();
+  
+  function init(doc, options) {
+    var opts = options || {};
+    var win = opts.window || doc.defaultView || {
+      setTimeout: function (fn) { return fn(); }
+    };
+    var confirmFn = opts.confirm || function (message) { return win.confirm(message); };
+    var FileReaderCtor = opts.FileReader || win.FileReader;
+    var getBootstrap = opts.getBootstrap || function () { return win.bootstrap; };
+
+    doc.addEventListener('click', function (event) {
+      handleConfirmClick(event, confirmFn);
+    });
+
+    doc.addEventListener('submit', function (event) {
+      handleConfirmSubmit(event, confirmFn);
+    });
+
+    doc.addEventListener('change', function (event) {
+      if (FileReaderCtor) {
+        handleFilePreview(event, doc, FileReaderCtor);
+      }
+    });
+
+    function start() {
+      autoDismissAlerts(doc, win, getBootstrap(), opts.dismissDelayMs);
+    }
+
+    if (doc.readyState === 'loading') {
+      doc.addEventListener('DOMContentLoaded', start);
+    } else {
+      start();
+    }
   }
-})();
+
+  function autoStart(global) {
+    init(global.document, { window: global });
+  }
+
+  return {
+    DEFAULT_CONFIRM_MESSAGE: DEFAULT_CONFIRM_MESSAGE,
+    ALERT_DISMISS_DELAY_MS: ALERT_DISMISS_DELAY_MS,
+    findConfirmable: findConfirmable,
+    confirmMessageFor: confirmMessageFor,
+    handleConfirmClick: handleConfirmClick,
+    handleConfirmSubmit: handleConfirmSubmit,
+    handleFilePreview: handleFilePreview,
+    dismissAlert: dismissAlert,
+    autoDismissAlerts: autoDismissAlerts,
+    init: init,
+    autoStart: autoStart
+  };
+});

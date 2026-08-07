@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $id  = (int)($_GET['id'] ?? 0);
 $res = $id > 0 ? ResourceModel::find($id) : null;
@@ -22,7 +22,7 @@ layout_header(e($res['title']), 'resources');
     </a>
 
     <?php if (!empty($res['cover_image_path'])): ?>
-    <img src="<?= e(upload_url($res['cover_image_path'])) ?>"
+    <img src="<?= e(photo_url($res['cover_image_path'] ?? null)) ?>"
          alt="<?= e($res['title']) ?>"
          class="img-fluid rounded mb-4 w-100"
          style="max-height:380px;object-fit:cover;">

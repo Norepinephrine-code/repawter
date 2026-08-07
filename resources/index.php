@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $page       = max(1, (int)($_GET['page']     ?? 1));
 $categoryId = isset($_GET['cat']) && $_GET['cat'] !== '' ? (int)$_GET['cat'] : null;
@@ -42,7 +42,7 @@ layout_header('Educational Resources', 'resources');
     <div class="col">
         <div class="paw-card card h-100 shadow-sm">
             <?php if (!empty($res['cover_image_path'])): ?>
-            <img src="<?= e(upload_url($res['cover_image_path'])) ?>"
+            <img src="<?= e(photo_url($res['cover_image_path'] ?? null)) ?>"
                  alt="<?= e($res['title']) ?>"
                  class="card-img-top"
                  style="height:180px;object-fit:cover;">

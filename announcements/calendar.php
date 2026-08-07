@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $page      = max(1, (int)($_GET['page'] ?? 1));
 $paginated = AnnouncementModel::list_published($page);
@@ -107,4 +107,4 @@ layout_header('Announcements', 'announcements');
     <?php endif; ?>
 <?php endif; ?>
 
-<?php layout_footer([asset('/js/calendar-init.js')]); ?>
+<?php layout_footer([asset('/vendor/fullcalendar/index.global.min.js'), asset('/js/calendar-init.js')]); ?>

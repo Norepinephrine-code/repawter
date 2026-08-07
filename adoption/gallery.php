@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $filters = [
     'animal_type' => isset($_GET['animal_type']) && in_array($_GET['animal_type'], ['dog', 'cat', 'other'], true)

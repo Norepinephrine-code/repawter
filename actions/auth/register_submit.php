@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -25,7 +25,7 @@ if (empty($errors['password']) && empty($errors['password_confirm'])) {
 
 if (!empty($errors)) {
     flash_old($_POST);
-    flash('error', 'Please fix the errors below.');
+    flash_errors($errors);
     redirect('/auth/register.php');
 }
 
@@ -42,7 +42,7 @@ if (is_array($result) && isset($result['errors'])) {
 
 $newUser = UserModel::find((int)$result);
 if ($newUser) {
-    set_current_user($newUser);
+    login_as($newUser);
 }
 
 flash('success', 'Welcome to RePawter! Your account has been created.');

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
@@ -44,7 +44,7 @@ admin_nav('reports');
         <div class="col-lg-5">
             <div class="paw-card p-3 mb-3">
                 <?php if (!empty($report['photo_path'])): ?>
-                <img src="<?= e(upload_url($report['photo_path'])) ?>"
+                <img src="<?= e(photo_url($report['photo_path'] ?? null)) ?>"
                      alt="Report photo"
                      class="report-photo w-100 rounded mb-3">
                 <?php endif; ?>
@@ -284,15 +284,5 @@ admin_nav('reports');
         </div>
     </div>
 </div>
-
-<script>
-
-document.addEventListener('submit', function(e) {
-    var btn = e.submitter;
-    if (btn && btn.dataset.confirm) {
-        if (!confirm(btn.dataset.confirm)) e.preventDefault();
-    }
-});
-</script>
 
 <?php layout_footer(); ?>

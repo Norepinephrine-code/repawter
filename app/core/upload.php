@@ -56,6 +56,17 @@ function upload_url(string $rel): string
     return UPLOAD_URL . '/' . $rel;
 }
 
+function photo_url(?string $rel, string $fallback = '/img/placeholder-pet.svg'): string
+{
+    $rel = trim((string)$rel);
+
+    if ($rel !== '' && !str_contains($rel, '..') && is_file(UPLOAD_DIR . '/' . $rel)) {
+        return upload_url($rel);
+    }
+
+    return asset($fallback);
+}
+
 function delete_upload(string $rel): void
 {
     $path = UPLOAD_DIR . '/' . ltrim($rel, '/');

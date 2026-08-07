@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $id = (int)($_GET['id'] ?? 0);
 if ($id <= 0) {

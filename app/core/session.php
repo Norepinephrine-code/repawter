@@ -7,11 +7,16 @@ function session_boot(): void
         return;
     }
 
+    
+    
     ini_set('session.use_strict_mode', '1');
+
+    
+    $cookiePath = BASE_URL === '' ? '/' : BASE_URL;
 
     session_set_cookie_params([
         'lifetime' => 0,
-        'path'     => BASE_URL,
+        'path'     => $cookiePath,
         'httponly' => true,
         'samesite' => 'Lax',
         'secure'   => defined('SESSION_SECURE') ? SESSION_SECURE : false,
@@ -37,6 +42,19 @@ function user_id(): ?int
 function user_role(): ?string
 {
     return $_SESSION['user']['role'] ?? null;
+}
+
+function session_regenerate(): void
+{
+    if (session_status() === PHP_SESSION_ACTIVE && !headers_sent()) {
+        session_regenerate_id(true);
+    }
+}
+
+function login_as(array $u): void
+{
+    session_regenerate();
+    set_current_user($u);
 }
 
 function set_current_user(array $u): void

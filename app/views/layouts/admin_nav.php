@@ -18,7 +18,8 @@ $navItems = [
 ];
 ?>
 <div class="paw-admin-subnav mb-4">
-    <nav class="nav nav-pills flex-nowrap" aria-label="Admin sections">
+    <?php  ?>
+    <nav class="nav nav-pills" aria-label="Admin sections">
 <?php foreach ($navItems as $item): ?>
 <?php   if ($item['ability'] !== null && !can($item['ability'])) continue; ?>
 <?php   $isActive = ($active === $item['key']); ?>

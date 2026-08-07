@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/app/bootstrap.php';
+require_once __DIR__ . '/app/bootstrap.php';
 
 if (is_logged_in()) {
     $role = user_role();
@@ -102,7 +102,7 @@ layout_header('Welcome', 'home');
     </div>
     <div class="col-md-3">
         <div class="paw-card p-4 text-center h-100">
-            <i class="bi bi-shield-check-fill text-paw fs-2 mb-3 d-block"></i>
+            <i class="bi bi-shield-fill-check text-paw fs-2 mb-3 d-block"></i>
             <h5 class="fw-bold">Verified Response</h5>
             <p class="text-muted small">Barangay officials and welfare orgs review, verify, and respond to reports.</p>
         </div>

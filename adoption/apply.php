@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 require_login();
 
@@ -17,9 +17,15 @@ if ($pet['status'] !== 'available') {
     redirect('/adoption/pet.php?id=' . $petId);
 }
 
-$photoUrl = !empty($pet['photo_path'])
-    ? upload_url($pet['photo_path'])
-    : asset('/img/placeholder-pet.png');
+$existing = AdoptionModel::find_for_pet_and_applicant($petId, (int)user_id());
+
+if ($existing !== null) {
+    flash('info', 'You have already applied to adopt ' . $pet['name']
+        . '. Your application is currently "' . str_replace('_', ' ', $existing['status']) . '".');
+    redirect('/adoption/pet.php?id=' . $petId);
+}
+
+$photoUrl = photo_url($pet['photo_path'] ?? null);
 
 $typeLabel = match ($pet['animal_type']) {
     'dog'   => 'Dog',

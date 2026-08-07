@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 $id  = (int)($_GET['id'] ?? 0);
 $pet = $id > 0 ? PetModel::find($id) : null;
@@ -10,9 +10,7 @@ if ($pet === null) {
     redirect('/adoption/gallery.php');
 }
 
-$photoUrl = !empty($pet['photo_path'])
-    ? upload_url($pet['photo_path'])
-    : asset('/img/placeholder-pet.png');
+$photoUrl = photo_url($pet['photo_path'] ?? null);
 
 $typeLabel = match ($pet['animal_type']) {
     'dog'   => 'Dog',

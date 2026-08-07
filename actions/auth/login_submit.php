@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -27,7 +27,7 @@ if ($user === false) {
     redirect('/auth/login.php');
 }
 
-set_current_user($user);
+login_as($user);
 
 $intended = $_SESSION['intended_url'] ?? null;
 unset($_SESSION['intended_url']);

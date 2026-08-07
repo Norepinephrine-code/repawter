@@ -1,0 +1,187 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+# A new push to the same branch supersedes an in-flight run.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php:
+    name: PHP lint & migrations
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: repawter_ci
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, gd, mbstring, fileinfo
+          coverage: none
+
+      - name: Lint every PHP file
+        run: |
+          # -l parses one file at a time; a non-zero exit anywhere fails the job.
+          find . -name '*.php' -not -path './node_modules/*' -not -path './.git/*' \
+            -print0 | xargs -0 -n1 -P4 php -l > /dev/null
+
+      - name: Apply migrations to an empty database
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: repawter_ci
+          DB_USER: root
+          DB_PASS: root
+          APP_ENV: dev
+        run: php db/migrate.php
+
+      - name: Re-apply migrations (must be a no-op)
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: repawter_ci
+          DB_USER: root
+          DB_PASS: root
+          APP_ENV: dev
+        run: |
+          # Migrations must be idempotent, and none may report CHANGED.
+          php db/migrate.php
+          php db/migrate.php --status | tee status.txt
+          if grep -qE 'pending|CHANGED|ORPHAN' status.txt; then
+            echo "::error::Migration state is not clean after a full apply"
+            exit 1
+          fi
+
+      - name: Load the demo seed
+        env:
+          DB_HOST: 127.0.0.1
+          DB_NAME: repawter_ci
+          DB_USER: root
+          DB_PASS: root
+          APP_ENV: dev
+        run: php db/migrate.php --seed
+
+      - name: Migrations and db/schema.sql must agree
+        env:
+          MYSQL_PWD: root
+        run: |
+          # db/schema.sql is a convenience snapshot; if it drifts from the
+          # migrations, a fresh checkout gets a different database.
+          mysql -h 127.0.0.1 -u root -e \
+            "DROP DATABASE IF EXISTS repawter_ref;
+             CREATE DATABASE repawter_ref CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+          mysql -h 127.0.0.1 -u root repawter_ref < db/schema.sql
+
+          dump_schema () {
+            for t in $(mysql -h 127.0.0.1 -u root -N -e \
+              "SELECT table_name FROM information_schema.tables
+               WHERE table_schema='$1' AND table_name<>'schema_migrations'
+               ORDER BY table_name"); do
+              mysql -h 127.0.0.1 -u root "$1" -N -e "SHOW CREATE TABLE \`$t\`" \
+                | sed 's/^[^\t]*\t//' | sed 's/AUTO_INCREMENT=[0-9]* //'
+            done
+          }
+
+          dump_schema repawter_ci  > /tmp/from-migrations.sql
+          dump_schema repawter_ref > /tmp/from-schema-sql.sql
+
+          if ! diff -u /tmp/from-schema-sql.sql /tmp/from-migrations.sql; then
+            echo "::error::db/schema.sql is out of step with db/migrations/ — see db/migrations/README.md"
+            exit 1
+          fi
+
+  unit:
+    name: Jest unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run test:coverage
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: unit-coverage
+          path: coverage/
+          retention-days: 7
+
+  e2e:
+    name: Playwright end-to-end
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mariadb:10.11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: repawter_e2e
+        ports: ['3306:3306']
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo_mysql, gd, mbstring, fileinfo
+          coverage: none
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install the Chromium build Playwright expects
+        run: npx playwright install --with-deps chromium
+
+      - name: Run the suite
+        env:
+          DB_HOST: 127.0.0.1
+          DB_USER: root
+          DB_PASS: root
+          E2E_DB_NAME: repawter_e2e
+        # The suite starts its own PHP server and resets its own database.
+        run: npm run test:e2e
+
+      - name: Upload the report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

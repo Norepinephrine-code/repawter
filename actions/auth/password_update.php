@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -22,7 +22,7 @@ if (empty($errors['new_password']) && empty($errors['new_password_confirm'])) {
 }
 
 if (!empty($errors)) {
-    flash('error', 'Please fix the errors below.');
+    flash_errors($errors);
     redirect('/auth/profile.php');
 }
 

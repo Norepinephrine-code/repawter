@@ -26,6 +26,16 @@ class AdoptionModel
         return db_one('SELECT * FROM adoption_applications WHERE id = ? LIMIT 1', [$id]);
     }
 
+    
+    public static function find_for_pet_and_applicant(int $petId, int $applicantId): ?array
+    {
+        return db_one(
+            'SELECT * FROM adoption_applications
+             WHERE pet_id = ? AND applicant_id = ? LIMIT 1',
+            [$petId, $applicantId]
+        );
+    }
+
     public static function find_with_details(int $id): ?array
     {
         return db_one(

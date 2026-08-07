@@ -16,16 +16,23 @@ Options -Indexes
     Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
 
     # Content Security Policy
-    # - default-src: only allow from same origin
-    # - script-src:  allow inline (Bootstrap data attributes), CDN, and self
-    # - style-src:   allow inline (Bootstrap), CDN, and self
-    # - img-src:     allow self, data URIs, and CDN
-    # - font-src:    allow CDN
-    # - connect-src: allow self (for AJAX/FullCalendar fetches)
-    # - object-src:  block all (no Flash/plugins)
-    # - base-uri:    restrict to self
-    # - form-action: allow self
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; img-src 'self' data: https://cdn.jsdelivr.net; font-src 'self' https://cdn.jsdelivr.net; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
+    # Every asset is served from this origin — Bootstrap, Bootstrap Icons,
+    # FullCalendar and Chart.js are vendored under assets/vendor/ — so no
+    # external host is permitted.
+    #
+    # 'unsafe-inline' is still required for style-src (Bootstrap sets inline
+    # styles on components) and script-src (pages inline small data snippets
+    # for the chart and calendar).
+    #
+    # Keep this in step with the identical header in app/bootstrap.php, which
+    # applies when the app is served by something that ignores .htaccess.
+    #
+    # Two directives are wider than 'self', for specific reasons:
+    #   font-src data:      FullCalendar injects its navigation icon font as a
+    #                       base64 data URI; without this its toolbar buttons
+    #                       render as empty boxes.
+    #   frame-src facebook  An announcement may embed the related Facebook post.
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:; frame-src https://www.facebook.com https://web.facebook.com; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'"
 
     # HSTS — only meaningful behind HTTPS; ignored on HTTP
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains" env=HTTPS
@@ -43,6 +50,15 @@ Options -Indexes
 <FilesMatch "^\.">
     Require all denied
 </FilesMatch>
-<FilesMatch "\.(sql|md|log|tmp)$">
+<FilesMatch "\.(sql|md|log|tmp|py|lock|json|yml|yaml)$">
     Require all denied
 </FilesMatch>
+
+# ── Block developer tooling that must never be served ─────────────
+# Maintenance scripts and test tooling live in the project tree; none of them
+# are part of the application and several rewrite source files.
+<FilesMatch "^(strip_comments|strip_html_comments|cleanup_blanks)\.(php|py)$">
+    Require all denied
+</FilesMatch>
+
+RedirectMatch 404 ^/(.*/)?(tests|node_modules|coverage|test-results|playwright-report)/

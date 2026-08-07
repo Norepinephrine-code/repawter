@@ -90,7 +90,12 @@ sudo find /var/www/repawter -type d -not -path "*/uploads/*" -not -path "*/stora
 
 ## 4. Configure the Application
 
-RePawter reads configuration from **environment variables** with safe fallbacks. Choose **one** of the following methods:
+RePawter reads configuration from **environment variables** with safe fallbacks.
+Every variable, its default, and what breaks if it is wrong is documented in
+**[CONFIGURATION.md](CONFIGURATION.md)** — read that first; this section covers
+only *where* to put the values on a server.
+
+Choose **one** of the following methods:
 
 ### Method A — Apache VirtualHost `SetEnv` (recommended)
 
@@ -201,6 +206,11 @@ Edit `/var/www/repawter/.htaccess` and **uncomment** the rewrite block:
 | ☐ | `APP_ENV` is set to `prod` |
 | ☐ | DB user is **not** `root` and has a strong password |
 | ☐ | `db/seed.sql` was **not** imported |
+| ☐ | `php db/migrate.php --status` shows every migration applied, none `CHANGED` or `ORPHAN` |
+| ☐ | `curl -I https://your-host/.env` returns 403 or 404, not 200 |
+| ☐ | `curl -I https://your-host/app/config/config.php` returns 403 or 404 |
+| ☐ | `curl -I https://your-host/db/schema.sql` returns 403 or 404 |
+| ☐ | `assets/vendor/` was deployed (the UI has no CDN fallback — a missing vendor directory renders every page unstyled) |
 | ☐ | `storage/logs/` is writable by the web server |
 | ☐ | `uploads/` is writable by the web server |
 | ☐ | HTTPS is enforced (301 redirect) |
@@ -208,7 +218,9 @@ Edit `/var/www/repawter/.htaccess` and **uncomment** the rewrite block:
 | ☐ | Security headers are present (check with [securityheaders.com](https://securityheaders.com)) |
 | ☐ | `display_errors` is `Off` (errors go to `storage/logs/php-error.log`) |
 | ☐ | First admin account created with a unique, strong password |
-| ☐ | All demo accounts from `seed.sql` are absent |
+| ☐ | All demo accounts from `seed.sql` are absent — `SELECT COUNT(*) FROM users WHERE email LIKE '%@example.test' OR email LIKE '%@repawter.test'` returns 0 |
+| ☐ | An invalid URL returns the styled 404 page, and a permission denial returns a styled 403 — not a blank page |
+| ☐ | Logging in and out works over HTTPS (if the session cookie never sticks, see `SESSION_SECURE` in [CONFIGURATION.md](CONFIGURATION.md)) |
 
 ---
 

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_ADMIN, ROLE_OFFICIAL, ROLE_WELFARE);
 
@@ -98,7 +98,7 @@ admin_nav('resources');
                 <label for="cover" class="form-label fw-semibold">Cover Image</label>
                 <?php if (!$isNew && !empty($res['cover_image_path'])): ?>
                 <div class="mb-2">
-                    <img src="<?= e(upload_url($res['cover_image_path'])) ?>"
+                    <img src="<?= e(photo_url($res['cover_image_path'] ?? null)) ?>"
                          alt="Current cover"
                          class="img-thumbnail"
                          style="max-height:120px;">

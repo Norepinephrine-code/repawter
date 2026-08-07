@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/../app/bootstrap.php';
+require_once __DIR__ . '/../app/bootstrap.php';
 
 require_login();
 
@@ -33,7 +33,7 @@ layout_header('My Reports', 'my_reports');
                 <div class="paw-card p-3 d-flex gap-3 align-items-start">
 
                     <?php if (!empty($r['photo_path'])): ?>
-                    <img src="<?= e(upload_url($r['photo_path'])) ?>"
+                    <img src="<?= e(photo_url($r['photo_path'] ?? null)) ?>"
                          alt="Report photo"
                          class="rounded"
                          style="width:90px;height:70px;object-fit:cover;flex-shrink:0;">

@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     redirect($_SERVER['HTTP_REFERER'] ?? '/');
@@ -52,7 +52,7 @@ if (!empty($clean['facebook_url'])) {
 
 if (!empty($errors)) {
     flash_old($_POST);
-    flash('error', 'Please fix the errors below.');
+    flash_errors($errors);
     $back = $id > 0
         ? '/admin/announcements/edit.php?id=' . $id
         : '/admin/announcements/edit.php';

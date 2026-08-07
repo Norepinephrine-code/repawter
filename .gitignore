@@ -21,7 +21,16 @@ Desktop.ini
 # ── Local config override (never commit real production credentials) ──
 app/config/config.local.php
 
+# ── Environment file (real secrets live here; .env.example is the template) ──
+.env
+
 # ── Storage / runtime logs (created at deploy time) ──
 /storage/logs/*
 !/storage/logs/.gitkeep
 !/storage/.gitkeep
+
+# ── Node / test tooling ──
+/node_modules/
+/test-results/
+/playwright-report/
+/coverage/

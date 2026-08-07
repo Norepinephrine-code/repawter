@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_ADMIN, ROLE_OFFICIAL, ROLE_WELFARE);
 
@@ -68,7 +68,7 @@ admin_nav('resources');
                 <?php if ($res['is_published']): ?>
                 <form method="post" action="<?= url('/actions/resources/resource_delete.php') ?>"
                       class="d-inline"
-                      onsubmit="return confirm('Unpublish this resource?')">
+                      data-confirm="Unpublish this resource?">
                     <?= csrf_field() ?>
                     <input type="hidden" name="id" value="<?= (int)$res['id'] ?>">
                     <button type="submit" class="btn btn-sm btn-outline-warning">

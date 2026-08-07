@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_WELFARE, ROLE_ADMIN);
 
@@ -22,9 +22,7 @@ $statusLabels = [
 ];
 $statusLabel = $statusLabels[$app['status']] ?? ucfirst($app['status']);
 
-$petPhoto = !empty($app['pet_photo'])
-    ? upload_url($app['pet_photo'])
-    : asset('/img/placeholder-pet.png');
+$petPhoto = photo_url($app['pet_photo'] ?? null);
 
 $petTypeLabel = match ($app['pet_animal_type'] ?? 'other') {
     'dog'   => 'Dog',
@@ -153,7 +151,7 @@ admin_nav('adoption');
                                 <input type="hidden" name="id" value="<?= (int)$id ?>">
                                 <input type="hidden" name="decision" value="approve">
                                 <button type="submit" class="btn btn-success w-100"
-                                        onclick="return confirm('Approve this application?')">
+                                        data-confirm="Approve this application?">
                                     <i class="bi bi-check-circle me-1"></i> Approve
                                 </button>
                             </form>
@@ -169,7 +167,7 @@ admin_nav('adoption');
                                               rows="2" placeholder="Reason for rejection (optional)"></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-danger w-100"
-                                        onclick="return confirm('Reject this application?')">
+                                        data-confirm="Reject this application?">
                                     <i class="bi bi-x-circle me-1"></i> Reject
                                 </button>
                             </form>
@@ -193,7 +191,7 @@ admin_nav('adoption');
                         <input type="hidden" name="id" value="<?= (int)$id ?>">
                         <input type="hidden" name="decision" value="complete">
                         <button type="submit" class="btn btn-paw-teal"
-                                onclick="return confirm('Mark this adoption as completed?')">
+                                data-confirm="Mark this adoption as completed?">
                             <i class="bi bi-trophy me-1"></i> Mark as Completed
                         </button>
                     </form>

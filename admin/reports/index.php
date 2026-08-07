@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
@@ -102,7 +102,7 @@ admin_nav('reports');
                     <td class="text-muted small"><?= e($r['id']) ?></td>
                     <td>
                         <?php if (!empty($r['photo_path'])): ?>
-                        <img src="<?= e(upload_url($r['photo_path'])) ?>"
+                        <img src="<?= e(photo_url($r['photo_path'] ?? null)) ?>"
                              alt="Report photo"
                              style="width:56px;height:44px;object-fit:cover;border-radius:4px;">
                         <?php else: ?>

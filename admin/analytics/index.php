@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
@@ -285,7 +285,7 @@ admin_nav('analytics');
 </div>
 
 <?php layout_footer([
-    '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>',
+    asset('/vendor/chartjs/chart.umd.js'),
     <<<JS
 <script>
 // Monthly chart

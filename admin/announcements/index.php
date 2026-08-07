@@ -1,5 +1,5 @@
 <?php
-require __DIR__ . '/../../app/bootstrap.php';
+require_once __DIR__ . '/../../app/bootstrap.php';
 
 require_role(ROLE_OFFICIAL, ROLE_WELFARE, ROLE_ADMIN);
 
@@ -172,7 +172,7 @@ admin_nav('announcements');
                             <form method="post"
                                   action="<?= url('/actions/announcements/announcement_delete.php') ?>"
                                   class="d-inline"
-                                  onsubmit="return confirm('Archive this announcement?')">
+                                  data-confirm="Archive this announcement?">
                                 <?= csrf_field() ?>
                                 <input type="hidden" name="id" value="<?= (int)$ann['id'] ?>">
                                 <button type="submit" class="btn btn-sm btn-outline-danger" title="Archive">

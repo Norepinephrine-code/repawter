@@ -19,11 +19,20 @@ Every PHP file must require bootstrap by counting how many directory levels it s
 
 | File location | Require statement |
 |---|---|
-| `/index.php` | `require __DIR__ . '/app/bootstrap.php';` |
-| `/reports/submit.php` | `require __DIR__ . '/../app/bootstrap.php';` |
-| `/admin/reports/index.php` | `require __DIR__ . '/../../app/bootstrap.php';` |
-| `/actions/reports/report_submit.php` | `require __DIR__ . '/../../app/bootstrap.php';` |
-| `/admin/system/criteria.php` | `require __DIR__ . '/../../app/bootstrap.php';` |
+| `/index.php` | `require_once __DIR__ . '/app/bootstrap.php';` |
+| `/reports/submit.php` | `require_once __DIR__ . '/../app/bootstrap.php';` |
+| `/admin/reports/index.php` | `require_once __DIR__ . '/../../app/bootstrap.php';` |
+| `/actions/reports/report_submit.php` | `require_once __DIR__ . '/../../app/bootstrap.php';` |
+| `/admin/system/criteria.php` | `require_once __DIR__ . '/../../app/bootstrap.php';` |
+
+Use `require_once`, and note that `bootstrap.php` is itself idempotent: it
+returns immediately if `APP_BOOTSTRAPPED` is already defined, and loads each
+core file with `require_once`.
+
+This is not cosmetic. `require_role()` denies access by including `403.php`,
+which bootstraps again — with a plain `require` that is a fatal
+"cannot redeclare function", so **every** permission denial in the app becomes a
+500 instead of a 403.
 
 The bootstrap file lives at `APP_ROOT/app/bootstrap.php`. `APP_ROOT` is the project root (defined in config as `dirname(__DIR__, 2)` from `app/config/config.php`, or `dirname(__DIR__)` from `app/bootstrap.php`).
 
@@ -110,7 +119,9 @@ All functions are global (plain PHP functions, no namespaces). Use PDO prepared 
 | `is_logged_in` | `is_logged_in(): bool` | True if `$_SESSION['user']['id']` is set. |
 | `user_id` | `user_id(): ?int` | Returns current user id as int, or null. |
 | `user_role` | `user_role(): ?string` | Returns current user role string, or null. |
-| `set_current_user` | `set_current_user(array $u): void` | Stores normalized user data in session. |
+| `set_current_user` | `set_current_user(array $u): void` | Stores normalized user data in session. Use only to refresh an already-signed-in user (e.g. after a profile edit). |
+| `login_as` | `login_as(array $u): void` | Establishes a signed-in identity: regenerates the session id, then calls `set_current_user`. **Login and registration must use this**, never `set_current_user` directly — a session id that survives authentication is a fixation hole. |
+| `session_regenerate` | `session_regenerate(): void` | Issues a new session id, preserving contents. |
 | `logout` | `logout(): void` | Clears session data, unsets cookie, destroys session. |
 
 ### auth.php
@@ -154,13 +165,16 @@ All functions are global (plain PHP functions, no namespaces). Use PDO prepared 
 | `sanitize_string` | `sanitize_string(?string $v): string` | Returns `trim((string)$v)`. |
 | `validate` | `validate(array $input, array $rules): array` | Returns `[$clean, $errors]`. Rule string format: `'required\|email\|max:255'`, `'int\|min:0'`, `'in:dog,cat,other'`, `'nullable'`. Each rule is pipe-delimited. |
 | `old` | `old(string $key, string $default = ''): string` | Returns value from `peek_old()` for the given key, or default. Does not clear old input. |
+| `field_label` | `field_label(string $field): string` | Human name for a field: `contact_number` → `Contact number`. |
+| `flash_errors` | `flash_errors(array $errors): void` | Flashes each validation message from `validate()`, prefixed with its field name. **Action handlers must call this** after a failed `validate()` — no page renders per-field errors, so anything else leaves the user guessing what was wrong. |
 
 ### upload.php
 
 | Function | Signature | Behavior |
 |---|---|---|
 | `handle_upload` | `handle_upload(array $file, string $subdir): array` | Returns `['ok'=>bool, 'path'=>?string, 'error'=>?string]`. Validates UPLOAD_ERR_OK, size ≤ MAX_UPLOAD_BYTES, MIME via `finfo_file`, `getimagesize()` success (no GD). Derives extension from MIME (jpeg→jpg, png→png, webp→webp). Filename: `bin2hex(random_bytes(16)) . '.' . $ext`. Target: `UPLOAD_DIR/$subdir/`. Returns relative path `"$subdir/$filename"`. |
-| `upload_url` | `upload_url(string $rel): string` | Returns `UPLOAD_URL . '/' . $rel`. |
+| `upload_url` | `upload_url(string $rel): string` | Returns `UPLOAD_URL . '/' . $rel`. Does not check the file exists. |
+| `photo_url` | `photo_url(?string $rel, string $fallback = '/img/placeholder-pet.svg'): string` | URL for a stored photo, falling back to a placeholder when the path is empty or the file is missing on disk. **Use this in views**, not `upload_url` — a database row can outlive its file, and a broken `<img>` on every card looks like the page is broken. |
 | `delete_upload` | `delete_upload(string $rel): void` | Deletes file at `UPLOAD_DIR/$rel` if it exists. |
 
 ### notify.php
