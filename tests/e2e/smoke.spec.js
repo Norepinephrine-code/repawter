@@ -147,7 +147,7 @@ test.describe('admin-only pages', () => {
 });
 
 test.describe('responsive layout @mobile', () => {
-  const MOBILE_ROUTES = ['/', 'adoption/gallery.php', '/resources/index.php', '/auth/login.php'];
+  const MOBILE_ROUTES = ['./', 'adoption/gallery.php', 'resources/index.php', 'auth/login.php'];
 
   for (const url of MOBILE_ROUTES) {
     test(`${url} fits the viewport`, async ({ page }) => {

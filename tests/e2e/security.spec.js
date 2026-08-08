@@ -38,7 +38,7 @@ test.describe('CSRF protection', () => {
   test('every POST form carries a token', async ({ page }) => {
     await login(page, 'resident');
 
-    for (const path of ['reports/submit.php', 'foster/apply.php', '/auth/profile.php']) {
+    for (const path of ['reports/submit.php', 'foster/apply.php', 'auth/profile.php']) {
       await page.goto(path);
 
       const forms = page.locator('form[method="post" i]');

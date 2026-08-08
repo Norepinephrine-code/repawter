@@ -22,17 +22,32 @@ test.describe('spec conventions', () => {
         continue;
       }
 
-      source.split('\n').forEach((line, i) => {
-
-        if (/^\s*(\/\/|\*|\/\*)/.test(line)) {
+      source.split('\n').forEach((rawLine, i) => {
+        if (/^\s*(\/\/|\*|\/\*)/.test(rawLine)) {
           return;
         }
 
-        const navCall = /\b(?:goto|request\.(?:get|post))\(\s*[`'"]\//;
-        const routeLiteral = /^\s*(?:\[\s*[`'"][^`'"]*[`'"]\s*,\s*)?[`'"]\/[a-z]/i;
+        // A CSS attribute selector such as a[href*="/admin/"] matches the
+        // rendered markup, where the BASE_URL prefix is genuinely present.
+        // Strip those before scanning so they are not mistaken for navigation.
+        const line = rawLine.replace(/\[[a-zA-Z-]+[\^$*~|]?=["'][^"']*["']\]/g, '[]');
 
-        if (navCall.test(line) || routeLiteral.test(line)) {
-          offenders.push(`${name}:${i + 1}  ${line.trim()}`);
+        // goto('/x') / request.get(`/x`) - the direct form.
+        const navCall = /\b(?:goto|request\.(?:get|post))\(\s*[`'"]\//;
+
+        // A quoted app path anywhere on the line, which covers route entries
+        // held in arrays and passed to goto() through a variable. Those are the
+        // dangerous ones: they read as ordinary data, so the mistake is easy to
+        // miss in review and produces a test that passes against the wrong page.
+        const APP_DIRS = 'admin|reports|foster|adoption|announcements|resources'
+          + '|notifications|auth|profile|actions|assets|uploads';
+        const routeLiteral = new RegExp("[`'\"]/(?:" + APP_DIRS + ")(?:/|\\.|['\"`])");
+
+        // A bare '/' route entry means the app root; './' is the correct form.
+        const bareRoot = /(?:^|[[(,]\s*)(['"`])\/\1/;
+
+        if (navCall.test(line) || routeLiteral.test(line) || bareRoot.test(line)) {
+          offenders.push(`${name}:${i + 1}  ${rawLine.trim()}`);
         }
       });
     }
