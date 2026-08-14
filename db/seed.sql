@@ -112,7 +112,7 @@ INSERT INTO `announcements`
 VALUES
 (1, 2, 1, 'vaccination_drive',
  'Free Rabies Vaccination Drive — San Isidro Barangay',
- '<p>All residents of San Isidro are invited to bring their dogs and cats for a <strong>FREE anti-rabies vaccination</strong> on July 20, 2026. This drive is part of the LGU\'s annual Responsible Pet Ownership Month observance. No registration needed — just bring your pet on a leash or in a secure carrier. Veterinary volunteers from Paw Rescue PH will be on-site.</p>',
+ 'All residents of San Isidro are invited to bring their dogs and cats for a FREE anti-rabies vaccination on July 20, 2026. This drive is part of the LGU\'s annual Responsible Pet Ownership Month observance. No registration needed — just bring your pet on a leash or in a secure carrier. Veterinary volunteers from Paw Rescue PH will be on-site.',
  'San Isidro Barangay Hall Covered Court',
  '2026-07-20 09:00:00', '2026-07-20 15:00:00', 0,
  'https://www.facebook.com/',
@@ -120,7 +120,9 @@ VALUES
 
 (2, 4, NULL, 'adoption_event',
  'Mega Adoption Fair — Find Your Forever Pet!',
- '<p>Paw Rescue PH is hosting its biggest adoption fair of the year! Come meet <strong>over 30 animals</strong> looking for their forever homes — dogs, cats, puppies, and kittens. Adoption fees are waived for the day. Each adopted pet comes with a starter kit (food, collar, and health card).</p><p>Bring a valid ID and proof of residence. Children under 18 must be accompanied by a parent or guardian.</p>',
+ 'Paw Rescue PH is hosting its biggest adoption fair of the year! Come meet over 30 animals looking for their forever homes — dogs, cats, puppies, and kittens. Adoption fees are waived for the day. Each adopted pet comes with a starter kit (food, collar, and health card).
+
+Bring a valid ID and proof of residence. Children under 18 must be accompanied by a parent or guardian.',
  'Sampleton Municipal Plaza',
  '2026-07-25 09:00:00', '2026-07-25 17:00:00', 0,
  'https://www.facebook.com/',
@@ -128,7 +130,9 @@ VALUES
 
 (3, 5, 2, 'tnr_schedule',
  'TNR Drive: Poblacion Community Cat Colony Management',
- '<p>Stray Haven in coordination with Barangay Poblacion will conduct a Trap-Neuter-Return (TNR) operation targeting the community cat colonies along Market Street and Rizal Avenue. Cats will be trapped the night before, neutered/spayed, vaccinated, ear-tipped, and returned within 24 hours.</p><p>Residents are reminded <strong>not to feed strays in the target area from July 27 at 8 PM</strong> to facilitate trapping.</p>',
+ 'Stray Haven in coordination with Barangay Poblacion will conduct a Trap-Neuter-Return (TNR) operation targeting the community cat colonies along Market Street and Rizal Avenue. Cats will be trapped the night before, neutered/spayed, vaccinated, ear-tipped, and returned within 24 hours.
+
+Residents are reminded not to feed strays in the target area from July 27 at 8 PM to facilitate trapping.',
  'Poblacion Market Area and Rizal Avenue',
  '2026-07-28 06:00:00', '2026-07-28 18:00:00', 0,
  NULL,
@@ -136,20 +140,20 @@ VALUES
 
 (4, 2, NULL, 'general',
  'Reminder: All Dogs Must Be Registered and Vaccinated',
- '<p>The local government reminds all pet owners that <strong>dog registration and annual anti-rabies vaccination are mandatory</strong> under RA 9482. Unregistered dogs are subject to impoundment. Registration may be done at your barangay hall from Monday to Friday, 8 AM to 5 PM. Bring your pet\'s previous vaccination record if available.</p>',
+ 'The local government reminds all pet owners that dog registration and annual anti-rabies vaccination are mandatory under RA 9482. Unregistered dogs are subject to impoundment. Registration may be done at your barangay hall from Monday to Friday, 8 AM to 5 PM. Bring your pet\'s previous vaccination record if available.',
  NULL, NULL, NULL, 0, NULL,
  'published', NULL, '2026-07-01 08:00:00'),
 
 (5, 2, 1, 'welfare_operation',
  'DRAFT: Barangay San Isidro Stray Dog Clearing Operation',
- '<p>Scheduled welfare clearing in coordination with the city veterinarian\'s office. Details TBD.</p>',
+ 'Scheduled welfare clearing in coordination with the city veterinarian\'s office. Details TBD.',
  'San Isidro Barangay',
  '2026-08-10 07:00:00', NULL, 0, NULL,
  'draft', NULL, NULL),
 
 (6, 4, NULL, 'adoption_event',
  'Online Cat Adoption Fair — Apply Now!',
- '<p>Can\'t make it in person? Paw Rescue PH will host an <strong>online adoption fair</strong> on August 10, 2026 via Facebook Live. Prospective adopters can browse available cats, ask questions, and submit adoption applications through RePawter. Interviews and home checks will follow.</p>',
+ 'Can\'t make it in person? Paw Rescue PH will host an online adoption fair on August 10, 2026 via Facebook Live. Prospective adopters can browse available cats, ask questions, and submit adoption applications through RePawter. Interviews and home checks will follow.',
  'Online — Facebook Live',
  '2026-08-10 14:00:00', '2026-08-10 17:00:00', 0,
  'https://www.facebook.com/',
